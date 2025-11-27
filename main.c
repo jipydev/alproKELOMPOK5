@@ -1,4 +1,4 @@
 #include <stdio.h>
 int main(){
-    printf("AKU CINTA Campus");
+    printf("AKU CINTA Campus Purwakarta");
 }
