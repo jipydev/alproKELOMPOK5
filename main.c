@@ -1,4 +1,4 @@
 #include <stdio.h>
 int main(){
-kwoakawokaokawok123355555wiiiilllogin
+printf("Dirga Raya Ahyari :");
 }
