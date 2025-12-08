@@ -11,7 +11,7 @@ struct inventory
 struct inventory barang[MAX];
 int jumlah = 0;
 
-//fungsi nambah barang
+//nambah barang
 void tambahBarang(){
 printf ("Isi Dengan Seksama Ya\n");
 printf("Masukan Jenis Barang : ");
@@ -24,6 +24,9 @@ scanf("%s",barang[jumlah].stok);
 jumlah++;
 printf("Berhasil Ditambahkan :)\n");
 }
+
+//lihat barang
+
 
 
 
