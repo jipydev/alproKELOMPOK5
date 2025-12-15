@@ -198,6 +198,50 @@ void lihatStunting() {
         }
     } while (p != 0);
 }
+//EDIT DATA//
+void editStunting() {
+    clearScreen();
+    int id = inputInt("Masukkan ID: ");
+
+    FILE *f = fopen(FILE_STUNTING, "r");
+    FILE *tmp = fopen(FILE_TMP, "w");
+    Stunting s;
+    int found = 0;
+
+    while (fscanf(f,
+        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
+        &s.id, s.nama, &s.umur_bulan,
+        &s.tinggi, s.tanggal, s.status) != EOF) {
+
+        if (s.id == id) {
+            found = 1;
+            inputString("Nama baru: ", s.nama, sizeof(s.nama));
+            s.umur_bulan = inputInt("Umur baru (bulan): ");
+
+            printf("Tinggi baru (cm): ");
+            scanf("%f", &s.tinggi);
+            while (getchar() != '\n');
+
+            inputString("Tanggal baru: ", s.tanggal, sizeof(s.tanggal));
+            tentukanStatusStunting(&s);
+        }
+   fprintf(tmp, "%d|%s|%d|%.1f|%s|%s\n",
+                s.id, s.nama, s.umur_bulan,
+                s.tinggi, s.tanggal, s.status);
+    }
+
+    fclose(f);
+    fclose(tmp);
+    remove(FILE_STUNTING);
+    rename(FILE_TMP, FILE_STUNTING);
+
+    if (found) printf("Data berhasil diubah!\n");
+    else printf("ID tidak ditemukan.\n");
+
+    pauseScreen();
+}
+
+
 
 
 
