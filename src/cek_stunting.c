@@ -104,6 +104,36 @@ void tampilkanSemuaStunting() {
                s.id, s.nama, s.umur_bulan,
                s.tinggi, s.status, s.tanggal);
     }
+    fclose(f);
+    pauseScreen();
+}
+
+//CARI BY ID//
+  
+void cariStuntingById() {
+    clearScreen();
+    int id = inputInt("Masukkan ID: ");
+
+    FILE *f = fopen(FILE_STUNTING, "r");
+    if (!f) {
+        printf("Belum ada data.\n");
+        pauseScreen();
+        return;
+    }
+
+    Stunting s;
+    int found = 0;
+
+    while (fscanf(f,
+        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
+        &s.id, s.nama, &s.umur_bulan,
+        &s.tinggi, s.tanggal, s.status) != EOF) {
+
+        if (s.id == id) {
+            printf("\nNama: %s\nUmur: %d bulan\nTinggi: %.1f cm\nStatus: %s\nTanggal: %s\n",
+                   s.nama, s.umur_bulan, s.tinggi, s.status, s.tanggal);
+            found = 1;
+            break;
 
 
 
