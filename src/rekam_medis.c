@@ -195,3 +195,25 @@ void hapusRekam() {
     printf(found ? "Data dihapus!\n" : "ID tidak ditemukan!\n");
     pauseScreen();
 }
+
+/* ================= MENU ================= */
+void menuRekam() {
+    int p;
+    do {
+        clearScreen();
+        printf("=== CRUD REKAM MEDIS ===\n");
+        printf("1. Tambah\n");
+        printf("2. Lihat\n");
+        printf("3. Edit\n");
+        printf("4. Hapus\n");
+        printf("0. Kembali\n");
+
+        p = inputInt("Pilih: ");
+
+        if (p == 1) tambahRekam();
+        else if (p == 2) lihatRekam();
+        else if (p == 3) editRekam();
+        else if (p == 4) hapusRekam();
+
+    } while (p != 0);
+}
