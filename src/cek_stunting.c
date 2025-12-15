@@ -134,6 +134,37 @@ void cariStuntingById() {
                    s.nama, s.umur_bulan, s.tinggi, s.status, s.tanggal);
             found = 1;
             break;
+        }
+    }
+
+    fclose(f);
+    if (!found) printf("ID tidak ditemukan.\n");
+    pauseScreen();
+}
+
+//CARI BY NAMA//
+
+void cariStuntingByNama() {
+    clearScreen();
+    char cari[50];
+    inputString("Masukkan nama balita: ", cari, sizeof(cari));
+
+    FILE *f = fopen(FILE_STUNTING, "r");
+    if (!f) {
+        printf("Belum ada data.\n");
+        pauseScreen();
+        return;
+    }
+
+    Stunting s;
+    int found = 0;
+
+    while (fscanf(f,
+        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
+        &s.id, s.nama, &s.umur_bulan,
+        &s.tinggi, s.tanggal, s.status) != EOF) {
+
+        if (strcmp(s.nama, cari) == 0) {
 
 
 
