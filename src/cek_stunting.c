@@ -165,6 +165,39 @@ void cariStuntingByNama() {
         &s.tinggi, s.tanggal, s.status) != EOF) {
 
         if (strcmp(s.nama, cari) == 0) {
+      printf("ID:%d | %d bln | %.1f cm | %s | %s\n",
+                   s.id, s.umur_bulan,
+                   s.tinggi, s.status, s.tanggal);
+            found = 1;
+        }
+    }
+
+    fclose(f);
+    if (!found) printf("Data tidak ditemukan.\n");
+    pauseScreen();
+}
+
+//SUBMENU LIHAT//
+  
+void lihatStunting() {
+    int p;
+    do {
+        clearScreen();
+        printf("=== LIHAT DATA STUNTING ===\n");
+        printf("1. Tampilkan Semua\n");
+        printf("2. Cari berdasarkan ID\n");
+        printf("3. Cari berdasarkan Nama\n");
+        printf("0. Kembali\n");
+
+        p = inputInt("Pilih: ");
+
+        switch (p) {
+            case 1: tampilkanSemuaStunting(); break;
+            case 2: cariStuntingById(); break;
+            case 3: cariStuntingByNama(); break;
+        }
+    } while (p != 0);
+}
 
 
 
