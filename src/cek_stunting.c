@@ -27,4 +27,56 @@ void tentukanStatusStunting(Stunting *s) {
     else
         strcpy(s->status, "NORMAL");
 }
+//TAMBAH DATA//
+void tambahStunting() {
+    clearScreen();
+    printf("=== TAMBAH DATA STUNTING BALITA ===\n");
+
+    Stunting s;
+    int id = inputInt("ID: ");
+
+    FILE *f = fopen(FILE_STUNTING, "r");
+
+    /* CEK ID DUPLIKAT */
+    if (f) {
+        while (fscanf(f,
+            "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
+            &s.id, s.nama, &s.umur_bulan,
+            &s.tinggi, s.tanggal, s.status) != EOF) {
+
+            if (s.id == id) {
+                printf("ID sudah terdaftar!\n");
+                fclose(f);
+                pauseScreen();
+                return;
+            }
+        }
+        fclose(f);
+    }
+       s.id = id;
+    inputString("Nama balita: ", s.nama, sizeof(s.nama));
+    s.umur_bulan = inputInt("Umur (bulan): ");
+
+    printf("Tinggi badan (cm): ");
+    scanf("%f", &s.tinggi);
+    while (getchar() != '\n');
+
+    inputString("Tanggal pemeriksaan (contoh: 12-09-2025): ",
+                s.tanggal, sizeof(s.tanggal));
+
+    tentukanStatusStunting(&s);
+
+    f = fopen(FILE_STUNTING, "a");
+    if (!f) {
+        printf("Gagal membuka file.\n");
+        pauseScreen();
+        return;
+    }
+
+    fprintf(f, "%d|%s|%d|%.1f|%s|%s\n",
+            s.id, s.nama, s.umur_bulan,
+            s.tinggi, s.tanggal, s.status);
+
+
+
 
