@@ -45,3 +45,93 @@ void tambahRekam() {
     printf("Rekam medis berhasil ditambahkan!\n");
     pauseScreen();
 }
+
+/* ================= LIHAT ================= */
+void tampilkanSemuaRekam() {
+    clearScreen();
+    FILE *f = fopen(FILE_REKAM, "r");
+    Rekam r;
+
+    if (!f) {
+        printf("Belum ada data.\n");
+        pauseScreen();
+        return;
+    }
+
+    printf("=== DATA REKAM MEDIS ===\n");
+    while (fscanf(f, "%d|%49[^|]|%99[^\n]\n",
+                  &r.id, r.nama, r.keluhan) != EOF) {
+        printf("ID:%d | %s | Keluhan: %s\n", r.id, r.nama, r.keluhan);
+    }
+
+    fclose(f);
+    pauseScreen();
+}
+
+void cariRekamById() {
+    clearScreen();
+    int id = inputInt("Masukkan ID (0 = kembali): ");
+    if (id == 0) return;
+
+    FILE *f = fopen(FILE_REKAM, "r");
+    Rekam r;
+    int found = 0;
+
+    while (f && fscanf(f, "%d|%49[^|]|%99[^\n]\n",
+                       &r.id, r.nama, r.keluhan) != EOF) {
+        if (r.id == id) {
+            printf("Ditemukan:\n");
+            printf("ID:%d\nNama:%s\nKeluhan:%s\n",
+                   r.id, r.nama, r.keluhan);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) printf("Data tidak ditemukan.\n");
+    if (f) fclose(f);
+    pauseScreen();
+}
+
+void cariRekamByNama() {
+    clearScreen();
+    char key[50];
+    inputString("Masukkan nama pasien: ", key, sizeof(key));
+
+    FILE *f = fopen(FILE_REKAM, "r");
+    Rekam r;
+    int found = 0;
+
+    while (f && fscanf(f, "%d|%49[^|]|%99[^\n]\n",
+                       &r.id, r.nama, r.keluhan) != EOF) {
+        if (strstr(r.nama, key)) {
+            printf("ID:%d | %s | Keluhan:%s\n",
+                   r.id, r.nama, r.keluhan);
+            found = 1;
+        }
+    }
+
+    if (!found) printf("Tidak ditemukan.\n");
+    if (f) fclose(f);
+    pauseScreen();
+}
+
+void lihatRekam() {
+    int p;
+    do {
+        clearScreen();
+        printf("=== LIHAT REKAM MEDIS ===\n");
+        printf("1. Tampilkan Semua\n");
+        printf("2. Cari berdasarkan ID\n");
+        printf("3. Cari berdasarkan Nama\n");
+        printf("0. Kembali\n");
+
+        p = inputInt("Pilih: ");
+
+        if (p == 1) tampilkanSemuaRekam();
+        else if (p == 2) cariRekamById();
+        else if (p == 3) cariRekamByNama();
+
+    } while (p != 0);
+}
+
