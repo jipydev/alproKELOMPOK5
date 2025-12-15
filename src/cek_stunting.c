@@ -15,3 +15,16 @@ typedef struct {
     char tanggal[20];
     char status[20];
 } Stunting;
+
+
+   //LOGIKA STUNTING//
+ 
+void tentukanStatusStunting(Stunting *s) {
+    float standar = (s->umur_bulan * 0.5f) + 50;
+
+    if (s->tinggi < standar)
+        strcpy(s->status, "STUNTING");
+    else
+        strcpy(s->status, "NORMAL");
+}
+
