@@ -76,6 +76,34 @@ void tambahStunting() {
     fprintf(f, "%d|%s|%d|%.1f|%s|%s\n",
             s.id, s.nama, s.umur_bulan,
             s.tinggi, s.tanggal, s.status);
+  fclose(f);
+    printf("Data berhasil disimpan!\n");
+    pauseScreen();
+}
+
+   //TAMPILKAN SEMUA//
+ 
+void tampilkanSemuaStunting() {
+    clearScreen();
+    FILE *f = fopen(FILE_STUNTING, "r");
+    if (!f) {
+        printf("Belum ada data.\n");
+        pauseScreen();
+        return;
+    }
+
+    Stunting s;
+    printf("=== DATA STUNTING BALITA ===\n");
+
+    while (fscanf(f,
+        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
+        &s.id, s.nama, &s.umur_bulan,
+        &s.tinggi, s.tanggal, s.status) != EOF) {
+
+        printf("ID:%d | %s | %d bln | %.1f cm | %s | %s\n",
+               s.id, s.nama, s.umur_bulan,
+               s.tinggi, s.status, s.tanggal);
+    }
 
 
 
