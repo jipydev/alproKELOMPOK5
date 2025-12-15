@@ -4,6 +4,7 @@
 struct inventory
 
 {
+    int id;
     char jenis[20];
     char namaBarang[20];
     int stok;
@@ -39,21 +40,45 @@ scanf("%d",&barang[jumlah].stok);
 
 jumlah++;
 printf("Berhasil Ditambahkan :)\n");
-printf("Tambahkan Lagi Y/T : ");
+printf("Tambahkan Lagi Y/T   : ");
 scanf(" %c",&y);
 }
 }
 //liat barang
-void liatbarang(){
+void liatBarang(){
+    int id= -1;
 for ( int i= 0; i<jumlah; i++){
-    printf(" \nJenis Barang : %s \n",barang[i].jenis);
+
+    printf(" \nId Barang    : %d \n",barang[i].id);
+    printf(" Jenis Barang    : %s \n",barang[i].jenis);
     printf(" Jenis Nama Barang : %s \n",barang[i].namaBarang);
-    printf(" Jenis Stok : %d \n",barang[i].stok);
+    printf(" Jenis Stok        : %d \n",barang[i].stok);
     
+//Edit Barang
+}
+}
+void editBarang(){
+    int search;
+  printf("Ketik Id Barang Yang Ingin Diubah: ");
+scanf("%d",&search);
+    for(int i=0 ; i<jumlah; i++){
+        if (search == barang[i].id){
+printf("Masukan Jenis Barang  Baru(obat/alat) : ");
+scanf("%s",barang[i].jenis);
+printf("Masukan Nama Barang Baru : ");
+scanf("%s",barang[i].namaBarang);
+printf("Masukan stok Barang Baru : ");
+scanf("%d",&barang[i].stok);
+
+
+        }
+
+      }
+    
+
 }
 
 
-}
 
 
 
@@ -65,7 +90,11 @@ for ( int i= 0; i<jumlah; i++){
 
 int main(){
 
+
 tambahBarang();
-liatbarang();
+liatBarang();
+editBarang();
 }
+
+
 
