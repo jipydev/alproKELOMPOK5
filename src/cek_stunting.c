@@ -240,7 +240,64 @@ void editStunting() {
 
     pauseScreen();
 }
+//HAPUS DATA//
+void hapusStunting() {
+    clearScreen();
+    int id = inputInt("Masukkan ID: ");
 
+    FILE *f = fopen(FILE_STUNTING, "r");
+    FILE *tmp = fopen(FILE_TMP, "w");
+    Stunting s;
+    int found = 0;
+
+    while (fscanf(f,
+        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
+        &s.id, s.nama, &s.umur_bulan,
+        &s.tinggi, s.tanggal, s.status) != EOF) {
+
+        if (s.id == id) {
+            found = 1;
+            continue;
+        }
+
+        fprintf(tmp, "%d|%s|%d|%.1f|%s|%s\n",
+                s.id, s.nama, s.umur_bulan,
+                s.tinggi, s.tanggal, s.status);
+    }
+   fclose(f);
+    fclose(tmp);
+    remove(FILE_STUNTING);
+    rename(FILE_TMP, FILE_STUNTING);
+
+    if (found) printf("Data berhasil dihapus!\n");
+    else printf("ID tidak ditemukan.\n");
+
+    pauseScreen();
+}
+
+/* =======================
+   MENU UTAMA
+   ======================= */
+void menuStunting() {
+    int p;
+    do {
+        clearScreen();
+        printf("=== MENU CEK STUNTING BALITA ===\n");
+        printf("1. Tambah Data\n");
+        printf("2. Lihat Data\n");
+        printf("3. Edit Data\n");
+        printf("4. Hapus Data\n");
+        printf("0. Kembali\n");
+
+        p = inputInt("Pilih: ");
+
+        if (p == 1) tambahStunting();
+        else if (p == 2) lihatStunting();
+        else if (p == 3) editStunting();
+        else if (p == 4) hapusStunting();
+
+    } while (p != 0);
+}
 
 
 
