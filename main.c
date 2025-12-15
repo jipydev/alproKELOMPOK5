@@ -1,33 +1,3 @@
-/*
- stunting.c -- simple console app to record stunting data in CSV files
-
- Compile:
-   gcc -o stunting stunting.c -lm
-
- Run:
-   ./stunting
-
- Data files (created/used in current directory):
-   ./data/who_hfa.csv         (optional; format described below)
-   children.csv               (created by program)
-   measurements.csv           (created by program)
-
- WHO CSV expected columns (header required):
-   age_months,sex,median_height_cm,sd_height_cm
- Example rows:
-   age_months,sex,median_height_cm,sd_height_cm
-   12,M,75.7,3.1
-   12,F,74.0,3.0
-   24,M,87.1,3.5
-   24,F,85.7,3.4
-
- Notes:
- - Sex is 'M' (male) or 'F' (female)
- - Age in months must be integer
- - Program uses simple (height - median) / sd Z calculation
- - If exact age not found, it searches +/- up to 6 months
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -436,4 +406,3 @@ int main(void) {
 }
 
 
-}
