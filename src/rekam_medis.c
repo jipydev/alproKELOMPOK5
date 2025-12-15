@@ -135,3 +135,63 @@ void lihatRekam() {
     } while (p != 0);
 }
 
+/* ================= EDIT ================= */
+void editRekam() {
+    clearScreen();
+    int id = inputInt("Masukkan ID (0 = batal): ");
+    if (id == 0) return;
+
+    FILE *f = fopen(FILE_REKAM, "r");
+    FILE *tmp = fopen(FILE_TEMP, "w");
+    Rekam r;
+    int found = 0;
+
+    while (f && fscanf(f, "%d|%49[^|]|%99[^\n]\n",
+                       &r.id, r.nama, r.keluhan) != EOF) {
+        if (r.id == id) {
+            found = 1;
+            inputString("Nama baru: ", r.nama, sizeof(r.nama));
+            inputString("Keluhan baru: ", r.keluhan, sizeof(r.keluhan));
+        }
+        fprintf(tmp, "%d|%s|%s\n", r.id, r.nama, r.keluhan);
+    }
+
+    if (f) fclose(f);
+    fclose(tmp);
+
+    remove(FILE_REKAM);
+    rename(FILE_TEMP, FILE_REKAM);
+
+    printf(found ? "Data diupdate!\n" : "ID tidak ditemukan!\n");
+    pauseScreen();
+}
+
+/* ================= HAPUS ================= */
+void hapusRekam() {
+    clearScreen();
+    int id = inputInt("Masukkan ID (0 = batal): ");
+    if (id == 0) return;
+
+    FILE *f = fopen(FILE_REKAM, "r");
+    FILE *tmp = fopen(FILE_TEMP, "w");
+    Rekam r;
+    int found = 0;
+
+    while (f && fscanf(f, "%d|%49[^|]|%99[^\n]\n",
+                       &r.id, r.nama, r.keluhan) != EOF) {
+        if (r.id == id) {
+            found = 1;
+            continue;
+        }
+        fprintf(tmp, "%d|%s|%s\n", r.id, r.nama, r.keluhan);
+    }
+
+    if (f) fclose(f);
+    fclose(tmp);
+
+    remove(FILE_REKAM);
+    rename(FILE_TEMP, FILE_REKAM);
+
+    printf(found ? "Data dihapus!\n" : "ID tidak ditemukan!\n");
+    pauseScreen();
+}
