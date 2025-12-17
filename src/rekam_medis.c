@@ -215,5 +215,5 @@ void menuRekam() {
         else if (p == 3) editRekam();
         else if (p == 4) hapusRekam();
 
-    } while (p != 0);
+    } while (p != 0);
 }
