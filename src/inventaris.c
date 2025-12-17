@@ -84,7 +84,59 @@ void tampilkanSemuaInv() {
 
     fclose(fp);
 }
+void editInv(){
 
+    FILE *fp, *temp;
+    Inventaris i;
+    int idCari;
+    int found = 0;
+
+    printf("Masukkan ID yang ingin diedit: ");
+    scanf("%d", &idCari);
+
+    fp = fopen("db.txt", "r");
+    temp = fopen("temp.txt", "w");
+
+    if (fp == NULL || temp == NULL) {
+        printf("Gagal membuka file!\n");
+        return;
+    }
+
+    for (int x = 0; x < BATAS; x++) {
+
+        if (fscanf(fp, "%d %s %d",
+                   &i.id, i.barang, &i.jumlah) != 3) {
+            break; 
+        }
+
+        if (i.id == idCari) {
+            printf("Data ditemukan!\n");
+            printf("Nama baru: ");
+            scanf("%s", i.barang);
+            printf("Jumlah baru: ");
+            scanf("%d", &i.jumlah);
+
+
+
+            
+            found = 1;
+        }
+
+        fprintf(temp, "%d %s %d\n",
+                i.id, i.barang, i.jumlah);
+    }
+
+    fclose(fp);
+    fclose(temp);
+
+    remove("db.txt");
+    rename("temp.txt", "db.txt");
+
+    if (found)
+        printf("Data berhasil diedit!\n");
+    else
+        printf("ID tidak ditemukan!\n");
+}
 
 
 
