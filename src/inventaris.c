@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Inventaris.h"
+#include "inventaris.h"
 #include "utils.h"
 
-
+#define BATAS 100
 #define FILE_INV  "inventaris.txt"
 
 typedef struct 
@@ -18,10 +18,10 @@ int generateId() {
     FILE *fp = fopen(FILE_INV, "r");
     if (!fp) return 1;
 
-    Inventaris i;
+    inventaris i;
     int lastId = 0;
 
-    while (fscanf(fp, "%d %s %d", &i.id, i.barang, &i.jumlah) != BATAS) {
+    while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) != BATAS) {
         if (i.id > lastId)
             lastId = i.id;
     }
@@ -34,10 +34,10 @@ int generateId() {
 void tambahInv() {
     FILE *fp = fopen(FILE_INV, "r");
     int count = 0;
-    Inventaris temp;
+    inventaris temp;
 
     if (fp) {
-        while (fscanf(fp, "%d %s %d", &temp.id, temp.barang, &temp.jumlah) != BATAS)
+        while (fscanf(fp, "%d %s %d", &temp.id, temp.namBarang, &temp.stok) != BATAS)
             count++;
         fclose(fp);
     }
@@ -47,17 +47,17 @@ void tambahInv() {
         return;
     }
 
-    Inventaris i;
+    inventaris i;
     i.id = generateId();
 
-    printf("Nama barang (1 kata): ");
-    scanf("%s", i.barang);
+    printf("Nama barang ): ");
+    scanf("%s", i.stok);
 
     printf("Jumlah: ");
-    scanf("%d", &i.jumlah);
+    scanf("%d", &i.stok);
 
     fp = fopen(FILE_INV, "a");
-    fprintf(fp, "%d %s %d\n", i.id, i.barang, i.jumlah);
+    fprintf(fp, "%d %s %d\n", i.id, i.namaBarang, i.stok);
     fclose(fp);
 
 }
