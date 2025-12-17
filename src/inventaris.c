@@ -31,13 +31,40 @@ int generateId() {
 }
 
 //Fitur tambah 
-void tambahinv(){
+void tambahInv() {
+    FILE *fp = fopen(FILE_INV, "r");
+    int count = 0;
+    Inventaris temp;
 
-    
-    FILE *fp=fopen(FILE_INV,"r");
-    inventaris i;
+    if (fp) {
+        while (fscanf(fp, "%d %s %d", &temp.id, temp.barang, &temp.jumlah) != BATAS)
+            count++;
+        fclose(fp);
+    }
+
+    if (count >= BATAS) {
+        printf("Inventory penuh!\n");
+        return;
+    }
+
+    Inventaris i;
+    i.id = generateId();
+
+    printf("Nama barang (1 kata): ");
+    scanf("%s", i.barang);
+
+    printf("Jumlah: ");
+    scanf("%d", &i.jumlah);
+
+    fp = fopen(FILE_INV, "a");
+    fprintf(fp, "%d %s %d\n", i.id, i.barang, i.jumlah);
+    fclose(fp);
 
 }
+
+
+
+
 
 
 
