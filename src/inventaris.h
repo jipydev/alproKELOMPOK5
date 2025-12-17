@@ -3,7 +3,6 @@
 
 void menuInventaris();
 void tambahInv();
-void lihatInv();
 void tampilkanSemuaInv();
 void editInv();
 

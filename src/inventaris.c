@@ -5,7 +5,7 @@
 #include "utils.h"
 
 #define BATAS 100
-#define FILE_INV  "inventaris.txt"
+#define FILE_INV  "db/inventaris.txt"
 
 typedef struct 
 {
@@ -37,7 +37,7 @@ void tambahInv() {
     inventaris temp;
 
     if (fp) {
-        while (fscanf(fp, "%d %s %d", &temp.id, temp.namaBarang, &temp.stok) != BATAS)
+        while (fscanf(fp, "%d %s %d", &temp.id, temp.namaBarang, &temp.stok) == BATAS)
             count++;
         fclose(fp);
     }
@@ -48,17 +48,26 @@ void tambahInv() {
     }
 
     inventaris i;
-    i.id = generateId();
+    i.id = count+1;
 
-    printf("Nama barang ): ");
-    scanf("%s", i.stok);
+    printf("Nama barang : ");
+    scanf("%s", i.namaBarang);
 
     printf("Jumlah: ");
     scanf("%d", &i.stok);
+    getchar();
 
     fp = fopen(FILE_INV, "a");
-    fprintf(fp, "%d %s %d\n", i.id, i.namaBarang, i.stok);
-    fclose(fp);
+if (!fp) {
+    printf("Gagal membuka file!\n");
+    return;
+}
+
+fprintf(fp, "%d %s %d\n", i.id, i.namaBarang, i.stok);
+fclose(fp);
+
+printf("Data Berhasil Disimpan");
+pauseScreen();
 
 }
 // Tampilkan semua data
@@ -155,9 +164,7 @@ printf("|2.Tambah Barang          |\n");
 printf("|-------------------------|\n");
 printf("|3.Edit Barang            |\n");
 printf("|-------------------------|\n");
-printf("|4.Cari Barang            |\n");
-printf("|-------------------------|\n");
-printf("|5.Hapus Barang           |\n");
+printf("|4.Hapus Barang           |\n");
 printf("|-------------------------|\n");
 printf("|0.Exit                   |\n");
 printf("|-------------------------|\n");
@@ -165,11 +172,10 @@ pilih=inputInt ("Pilihan Anda :");
 
 switch (pilih)
 {
-case 1 : lihatInv();break;
+case 1 : tampilkanSemuaInv();break;
    case 2 : tambahInv();break;
-   case 3 : lihatInv();break;
-   case 4 : editInv();break;
-   case 5 : exit(0);
+   case 3 : editInv();break;
+   case 4 : exit(0);
 
 default:
     printf("Kesalahan");
