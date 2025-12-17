@@ -69,17 +69,17 @@ void tampilkanSemuaInv() {
         return;
     }
 
-    Inventaris i;
+    inventaris i;
     printf("\n=== DATA INVENTARIS ===\n");
 
    for (int x ; x<BATAS ; x++) {
     int cek = fscanf(fp, "%d %s %d",
-                     &i.id, i.barang, &i.jumlah);
+                     &i.id, i.namaBarang, &i.stok);
 
     if (cek != 3) {
         break; 
     }
-        printf("ID:%d | %s | %d pcs\n", i.id, i.barang, i.jumlah);
+        printf("ID:%d | %s | %d pcs\n", i.id, i.namaBarang, i.stok);
     }
 
     fclose(fp);
@@ -87,7 +87,7 @@ void tampilkanSemuaInv() {
 void editInv(){
 
     FILE *fp, *temp;
-    Inventaris i;
+    inventaris i;
     int idCari;
     int found = 0;
 
