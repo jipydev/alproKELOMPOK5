@@ -37,7 +37,7 @@ void tambahInv() {
     inventaris temp;
 
     if (fp) {
-        while (fscanf(fp, "%d %s %d", &temp.id, temp.namBarang, &temp.stok) != BATAS)
+        while (fscanf(fp, "%d %s %d", &temp.id, temp.namaBarang, &temp.stok) != BATAS)
             count++;
         fclose(fp);
     }
@@ -60,6 +60,29 @@ void tambahInv() {
     fprintf(fp, "%d %s %d\n", i.id, i.namaBarang, i.stok);
     fclose(fp);
 
+}
+// Tampilkan semua data
+void tampilkanSemuaInv() {
+    FILE *fp = fopen(FILE_INV, "r");
+    if (!fp) {
+        printf("Belum ada data.\n");
+        return;
+    }
+
+    Inventaris i;
+    printf("\n=== DATA INVENTARIS ===\n");
+
+   for (int x ; x<BATAS ; x++) {
+    int cek = fscanf(fp, "%d %s %d",
+                     &i.id, i.barang, &i.jumlah);
+
+    if (cek != 3) {
+        break; 
+    }
+        printf("ID:%d | %s | %d pcs\n", i.id, i.barang, i.jumlah);
+    }
+
+    fclose(fp);
 }
 
 
