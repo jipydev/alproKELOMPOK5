@@ -105,16 +105,16 @@ void editInv(){
     for (int x = 0; x < BATAS; x++) {
 
         if (fscanf(fp, "%d %s %d",
-                   &i.id, i.barang, &i.jumlah) != 3) {
+                   &i.id, i.namaBarang, &i.stok) != 3) {
             break; 
         }
 
         if (i.id == idCari) {
             printf("Data ditemukan!\n");
             printf("Nama baru: ");
-            scanf("%s", i.barang);
+            scanf("%s", i.namaBarang);
             printf("Jumlah baru: ");
-            scanf("%d", &i.jumlah);
+            scanf("%d", &i.stok);
 
 
 
@@ -123,7 +123,7 @@ void editInv(){
         }
 
         fprintf(temp, "%d %s %d\n",
-                i.id, i.barang, i.jumlah);
+                i.id, i.namaBarang, i.stok);
     }
 
     fclose(fp);
