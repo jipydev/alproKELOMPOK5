@@ -145,7 +145,7 @@ void editInv(){
 
 //Menu utama 
 void menuInventaris(){
-
+int pilih;
 printf("|=========================|\n");
 printf("|       Inventory         |\n");
 printf("|=========================|\n");
@@ -159,6 +159,21 @@ printf("|4.Cari Barang            |\n");
 printf("|-------------------------|\n");
 printf("|5.Hapus Barang           |\n");
 printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
+pilih=inputInt ("Pilihan Anda :");
+
+switch (pilih)
+{
+case 1 : lihatInv();break;
+   case 2 : tambahInv();break;
+   case 3 : lihatInv();break;
+   case 4 : editInv();break;
+   case 5 : exit(0);
+
+default:
+    printf("Kesalahan");
+}
 }
 
 
