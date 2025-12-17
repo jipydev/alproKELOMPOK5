@@ -68,7 +68,7 @@ fclose(fp);
 
 printf("Data Berhasil Disimpan");
 pauseScreen();
-
+ 
 }
 // Tampilkan semua data
 void tampilkanSemuaInv() {
