@@ -5,7 +5,8 @@ typedef struct {
     int id;
     char kegiatan[50];
     char tanggal[30];
-} Jadwal;
+
+    } Jadwal;
 
 /* Menu utama */
 void menuJadwal();
@@ -21,6 +22,5 @@ void tampilkanSemuaJadwal();
 void cariJadwalById();
 void cariJadwalByNama();
 void cariJadwalByTanggal();
-
 
 #endif
