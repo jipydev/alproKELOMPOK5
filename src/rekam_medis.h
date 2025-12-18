@@ -2,7 +2,7 @@
 #define REKAM_MEDIS_H
 
 /* =======================
-   STRUKTUR DATA
+   STRUKTUR DATA KOMPLEKS
    ======================= */
 typedef struct {
     int id;
@@ -16,7 +16,7 @@ typedef struct {
 void menuRekam();
 
 /* =======================
-   CRUD
+   CRUD DATA
    ======================= */
 void tambahRekam();
 void lihatRekam();
@@ -24,10 +24,18 @@ void editRekam();
 void hapusRekam();
 
 /* =======================
-   SUBMENU LIHAT
+   SUB MENU LIHAT
    ======================= */
 void tampilkanSemuaRekam();
 void cariRekamById();
 void cariRekamByNama();
+
+/* =======================
+   UTILITAS INTERNAL
+   ======================= */
+void loadRekam();
+void saveRekam();
+int  cariIndexById(int id);
+void sortRekamByNama();
 
 #endif
