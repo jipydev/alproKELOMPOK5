@@ -15,3 +15,23 @@
    ======================= */
 Rekam dataRekam[MAX_REKAM];
 int jumlahRekam = 0;
+
+/* =======================
+   LOAD & SAVE (PERSISTENSI)
+   ======================= */
+void loadRekam() {
+    FILE *f = fopen(FILE_REKAM, "r");
+    jumlahRekam = 0;
+
+    if (!f) return;
+
+    while (fscanf(f, "%d|%49[^|]|%99[^\n]\n",
+           &dataRekam[jumlahRekam].id,
+           dataRekam[jumlahRekam].nama,
+           dataRekam[jumlahRekam].keluhan) != EOF) {
+
+        jumlahRekam++;
+        if (jumlahRekam >= MAX_REKAM) break;
+    }
+    fclose(f);
+}
