@@ -16,7 +16,7 @@ void lihatJadwal();
 void editJadwal();
 void hapusJadwal();
 
-/* Submenu lihat */
+/* Submenu lihat WWWW*/
 void tampilkanSemuaJadwal();
 void cariJadwalById();
 void cariJadwalByNama();
