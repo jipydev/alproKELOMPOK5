@@ -1,16 +1,22 @@
 #ifndef CEK_STUNTING_H
 #define CEK_STUNTING_H
 
-/* Menu utama */
+/* =======================
+   MENU UTAMA
+   ======================= */
 void menuStunting();
 
-/* CRUD */
+/* =======================
+   CRUD DATA STUNTING
+   ======================= */
 void tambahStunting();
 void lihatStunting();
 void editStunting();
 void hapusStunting();
 
-/* Submenu lihat */
+/* =======================
+   SUBMENU LIHAT
+   ======================= */
 void tampilkanSemuaStunting();
 void cariStuntingById();
 void cariStuntingByNama();
