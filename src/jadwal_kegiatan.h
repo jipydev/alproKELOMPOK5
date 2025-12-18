@@ -5,3 +5,8 @@ typedef struct {
     int id;
     char kegiatan[50];
     char tanggal[30];
+
+    } Jadwal;
+
+/* Menu utama */
+void menuJadwal();
