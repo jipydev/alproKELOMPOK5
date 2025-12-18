@@ -47,3 +47,17 @@ int cariIndexById(int id) {
     return -1;
 }
 
+/* =======================
+   SORTING (BUBBLE SORT)
+   ======================= */
+void sortRekamByNama() {
+    for (int i = 0; i < jumlahRekam - 1; i++) {
+        for (int j = 0; j < jumlahRekam - i - 1; j++) {
+            if (strcmp(dataRekam[j].nama, dataRekam[j + 1].nama) > 0) {
+                Rekam temp = dataRekam[j];
+                dataRekam[j] = dataRekam[j + 1];
+                dataRekam[j + 1] = temp;
+            }
+        }
+    }
+}
