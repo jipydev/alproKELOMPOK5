@@ -237,7 +237,6 @@ void editStunting() {
 
     if (found) printf("Data berhasil diubah!\n");
     else printf("ID tidak ditemukan.\n");
-
     pauseScreen();
 }
 //HAPUS DATA//
