@@ -35,3 +35,15 @@ void loadRekam() {
     }
     fclose(f);
 }
+
+/* =======================
+   SEARCHING (SEQUENTIAL)
+   ======================= */
+int cariIndexById(int id) {
+    for (int i = 0; i < jumlahRekam; i++) {
+        if (dataRekam[i].id == id)
+            return i;
+    }
+    return -1;
+}
+
