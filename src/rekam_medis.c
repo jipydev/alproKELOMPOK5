@@ -218,3 +218,27 @@ void hapusRekam() {
     printf("Data berhasil dihapus!\n");
     pauseScreen();
 }
+
+/* =======================
+   MENU UTAMA
+   ======================= */
+void menuRekam() {
+    int p;
+    do {
+        clearScreen();
+        printf("=== MENU REKAM MEDIS ===\n");
+        printf("1. Tambah Data\n");
+        printf("2. Lihat Data\n");
+        printf("3. Edit Data\n");
+        printf("4. Hapus Data\n");
+        printf("0. Kembali\n");
+
+        p = inputInt("Pilih: ");
+
+        if (p == 1) tambahRekam();
+        else if (p == 2) lihatRekam();
+        else if (p == 3) editRekam();
+        else if (p == 4) hapusRekam();
+
+    } while (p != 0);
+}
