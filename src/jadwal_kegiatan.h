@@ -10,3 +10,11 @@ typedef struct {
 
 /* Menu utama */
 void menuJadwal();
+
+/* CRUD */
+void tambahJadwal();
+void lihatJadwal();
+void editJadwal();
+void hapusJadwal();
+
+
