@@ -168,3 +168,27 @@ void lihatRekam() {
 
     } while (p != 0);
 }
+
+/* =======================
+   EDIT DATA
+   ======================= */
+void editRekam() {
+    clearScreen();
+    loadRekam();
+
+    int id = inputInt("Masukkan ID: ");
+    int idx = cariIndexById(id);
+
+    if (idx == -1) {
+        printf("ID tidak ditemukan!\n");
+        pauseScreen();
+        return;
+    }
+
+    inputString("Nama baru    : ", dataRekam[idx].nama, sizeof(dataRekam[idx].nama));
+    inputString("Keluhan baru : ", dataRekam[idx].keluhan, sizeof(dataRekam[idx].keluhan));
+
+    saveRekam();
+    printf("Data berhasil diupdate!\n");
+    pauseScreen();
+}
