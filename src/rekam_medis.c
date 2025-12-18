@@ -192,3 +192,29 @@ void editRekam() {
     printf("Data berhasil diupdate!\n");
     pauseScreen();
 }
+
+/* =======================
+   HAPUS DATA
+   ======================= */
+void hapusRekam() {
+    clearScreen();
+    loadRekam();
+
+    int id = inputInt("Masukkan ID: ");
+    int idx = cariIndexById(id);
+
+    if (idx == -1) {
+        printf("ID tidak ditemukan!\n");
+        pauseScreen();
+        return;
+    }
+
+    for (int i = idx; i < jumlahRekam - 1; i++) {
+        dataRekam[i] = dataRekam[i + 1];
+    }
+    jumlahRekam--;
+
+    saveRekam();
+    printf("Data berhasil dihapus!\n");
+    pauseScreen();
+}
