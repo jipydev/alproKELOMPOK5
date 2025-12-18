@@ -1,1 +1,2 @@
-tes
+#ifndef JADWAL_KEGIATAN_H
+#define JADWAL_KEGIATAN_H
