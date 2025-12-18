@@ -61,3 +61,31 @@ void sortRekamByNama() {
         }
     }
 }
+
+/* =======================
+   TAMBAH DATA
+   ======================= */
+void tambahRekam() {
+    clearScreen();
+    loadRekam();
+
+    int id = inputInt("Masukkan ID Rekam (0 = batal): ");
+    if (id == 0) return;
+
+    if (cariIndexById(id) != -1) {
+        printf("ID sudah digunakan!\n");
+        pauseScreen();
+        return;
+    }
+
+    Rekam r;
+    r.id = id;
+    inputString("Nama Pasien : ", r.nama, sizeof(r.nama));
+    inputString("Keluhan     : ", r.keluhan, sizeof(r.keluhan));
+
+    dataRekam[jumlahRekam++] = r;
+    saveRekam();
+
+    printf("Data rekam medis berhasil ditambahkan!\n");
+    pauseScreen();
+}
