@@ -4,279 +4,249 @@
 #include "cek_stunting.h"
 #include "utils.h"
 
-#define FILE_STUNTING "db/stunting.txt"
-#define FILE_TMP      "db/tmp_stunting.txt"
+#define MAX_STUNTING 100
+#define FILE_STUNTING "db/data_stunting.txt"
 
-typedef struct {
-    int id;
-    char nama[50];
-    int umur_bulan;
-    float tinggi;
-    char tanggal[20];
-    char status[20];
-} Stunting;
+//ARRAY OF STRUCT//
+Stunting dataStunting[MAX_STUNTING];
+int jumlahStunting = 0;
 
+//LOAD & SAVE (PERSISTENSI)//
+void loadStunting() {
+    FILE *f = fopen(FILE_STUNTING, "r");
+    jumlahStunting = 0;
 
-   //LOGIKA STUNTING//
- 
-void tentukanStatusStunting(Stunting *s) {
-    float standar = (s->umur_bulan * 0.5f) + 50;
+    if (!f) return;
+
+    while (fscanf(f, "%d|%49[^|]|%d|%f|%19[^\n]\n",
+           &dataStunting[jumlahStunting].id,
+           dataStunting[jumlahStunting].nama,
+           &dataStunting[jumlahStunting].umur,
+           &dataStunting[jumlahStunting].tinggi,
+           dataStunting[jumlahStunting].status) != EOF) {
+
+        jumlahStunting++;
+        if (jumlahStunting >= MAX_STUNTING) break;
+    }
+    fclose(f);
+}
+
+void saveStunting() {
+    FILE *f = fopen(FILE_STUNTING, "w");
+    if (!f) return;
+
+    for (int i = 0; i < jumlahStunting; i++) {
+        fprintf(f, "%d|%s|%d|%.2f|%s\n",
+            dataStunting[i].id,
+            dataStunting[i].nama,
+            dataStunting[i].umur,
+            dataStunting[i].tinggi,
+            dataStunting[i].status);
+    }
+    fclose(f);
+}
+
+//LOGIKA WHO (TB/U)//
+void tentukanStatus(Stunting *s) {
+    float standar;
+
+    if (s->umur <= 12) standar = 75;
+    else if (s->umur <= 24) standar = 85;
+    else if (s->umur <= 36) standar = 95;
+    else if (s->umur <= 48) standar = 102;
+    else standar = 110;
 
     if (s->tinggi < standar)
         strcpy(s->status, "STUNTING");
     else
         strcpy(s->status, "NORMAL");
 }
+
+//SEARCHING (SEQUENTIAL)//
+int cariIndexStunting(int id) {
+    for (int i = 0; i < jumlahStunting; i++) {
+        if (dataStunting[i].id == id)
+            return i;
+    }
+    return -1;
+}
+//SORTING (BUBBLE SORT)//
+void sortStuntingByNama() {
+    for (int i = 0; i < jumlahStunting - 1; i++) {
+        for (int j = 0; j < jumlahStunting - i - 1; j++) {
+            if (strcmp(dataStunting[j].nama,
+                       dataStunting[j + 1].nama) > 0) {
+                Stunting tmp = dataStunting[j];
+                dataStunting[j] = dataStunting[j + 1];
+                dataStunting[j + 1] = tmp;
+            }
+        }
+    }
+}
+
 //TAMBAH DATA//
 void tambahStunting() {
     clearScreen();
-    printf("=== TAMBAH DATA STUNTING BALITA ===\n");
+    loadStunting();
 
-    Stunting s;
-    int id = inputInt("ID: ");
+    int id = inputInt("Masukkan ID (0=batal): ");
+    if (id == 0) return;
 
-    FILE *f = fopen(FILE_STUNTING, "r");
-
-    /* CEK ID DUPLIKAT */
-    if (f) {
-        while (fscanf(f,
-            "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
-            &s.id, s.nama, &s.umur_bulan,
-            &s.tinggi, s.tanggal, s.status) != EOF) {
-
-            if (s.id == id) {
-                printf("ID sudah terdaftar!\n");
-                fclose(f);
-                pauseScreen();
-                return;
-            }
-        }
-        fclose(f);
-    }
-       s.id = id;
-    inputString("Nama balita: ", s.nama, sizeof(s.nama));
-    s.umur_bulan = inputInt("Umur (bulan): ");
-
-    printf("Tinggi badan (cm): ");
-    scanf("%f", &s.tinggi);
-    while (getchar() != '\n');
-
-    inputString("Tanggal pemeriksaan (contoh: 12-09-2025): ",
-                s.tanggal, sizeof(s.tanggal));
-
-    tentukanStatusStunting(&s);
-
-    f = fopen(FILE_STUNTING, "a");
-    if (!f) {
-        printf("Gagal membuka file.\n");
+    if (cariIndexStunting(id) != -1) {
+        printf("ID sudah terdaftar!\n");
         pauseScreen();
         return;
     }
 
-    fprintf(f, "%d|%s|%d|%.1f|%s|%s\n",
-            s.id, s.nama, s.umur_bulan,
-            s.tinggi, s.tanggal, s.status);
-  fclose(f);
-    printf("Data berhasil disimpan!\n");
+    Stunting s;
+    s.id = id;
+    inputString("Nama Anak  : ", s.nama, sizeof(s.nama));
+    s.umur = inputInt("Umur (bulan, max 59): ");
+
+    if (s.umur < 0 || s.umur > 59) {
+        printf("Umur balita harus 0–59 bulan!\n");
+        pauseScreen();
+        return;
+    }
+
+    s.tinggi = inputFloat("Tinggi Badan (cm): ");
+    tentukanStatus(&s);
+
+    dataStunting[jumlahStunting++] = s;
+    saveStunting();
+
+    printf("Data stunting berhasil ditambahkan!\n");
     pauseScreen();
 }
 
-   //TAMPILKAN SEMUA//
- 
+//LIHAT DATA//
 void tampilkanSemuaStunting() {
     clearScreen();
-    FILE *f = fopen(FILE_STUNTING, "r");
-    if (!f) {
-        printf("Belum ada data.\n");
-        pauseScreen();
-        return;
+    loadStunting();
+    sortStuntingByNama();
+
+    printf("=== DATA CEK STUNTING BALITA ===\n");
+    for (int i = 0; i < jumlahStunting; i++) {
+        printf("ID:%d | %s | Umur:%d bln | %.1f cm | %s\n",
+            dataStunting[i].id,
+            dataStunting[i].nama,
+            dataStunting[i].umur,
+            dataStunting[i].tinggi,
+            dataStunting[i].status);
     }
-
-    Stunting s;
-    printf("=== DATA STUNTING BALITA ===\n");
-
-    while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
-        &s.id, s.nama, &s.umur_bulan,
-        &s.tinggi, s.tanggal, s.status) != EOF) {
-
-        printf("ID:%d | %s | %d bln | %.1f cm | %s | %s\n",
-               s.id, s.nama, s.umur_bulan,
-               s.tinggi, s.status, s.tanggal);
-    }
-    fclose(f);
     pauseScreen();
 }
 
-//CARI BY ID//
-  
 void cariStuntingById() {
     clearScreen();
+    loadStunting();
+
     int id = inputInt("Masukkan ID: ");
+    int idx = cariIndexStunting(id);
 
-    FILE *f = fopen(FILE_STUNTING, "r");
-    if (!f) {
-        printf("Belum ada data.\n");
-        pauseScreen();
-        return;
-    }
+    if (idx == -1)
+        printf("Data tidak ditemukan.\n");
+    else
+        printf("Nama:%s\nUmur:%d bln\nTinggi:%.1f cm\nStatus:%s\n",
+            dataStunting[idx].nama,
+            dataStunting[idx].umur,
+            dataStunting[idx].tinggi,
+            dataStunting[idx].status);
 
-    Stunting s;
-    int found = 0;
-
-    while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
-        &s.id, s.nama, &s.umur_bulan,
-        &s.tinggi, s.tanggal, s.status) != EOF) {
-
-        if (s.id == id) {
-            printf("\nNama: %s\nUmur: %d bulan\nTinggi: %.1f cm\nStatus: %s\nTanggal: %s\n",
-                   s.nama, s.umur_bulan, s.tinggi, s.status, s.tanggal);
-            found = 1;
-            break;
-        }
-    }
-
-    fclose(f);
-    if (!found) printf("ID tidak ditemukan.\n");
     pauseScreen();
 }
-
-//CARI BY NAMA//
 
 void cariStuntingByNama() {
     clearScreen();
-    char cari[50];
-    inputString("Masukkan nama balita: ", cari, sizeof(cari));
+    loadStunting();
 
-    FILE *f = fopen(FILE_STUNTING, "r");
-    if (!f) {
-        printf("Belum ada data.\n");
-        pauseScreen();
-        return;
-    }
+    char key[50];
+    inputString("Masukkan nama: ", key, sizeof(key));
 
-    Stunting s;
     int found = 0;
-
-    while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
-        &s.id, s.nama, &s.umur_bulan,
-        &s.tinggi, s.tanggal, s.status) != EOF) {
-
-        if (strcmp(s.nama, cari) == 0) {
-      printf("ID:%d | %d bln | %.1f cm | %s | %s\n",
-                   s.id, s.umur_bulan,
-                   s.tinggi, s.status, s.tanggal);
+    for (int i = 0; i < jumlahStunting; i++) {
+        if (strstr(dataStunting[i].nama, key)) {
+            printf("ID:%d | %s | %s\n",
+                dataStunting[i].id,
+                dataStunting[i].nama,
+                dataStunting[i].status);
             found = 1;
         }
     }
 
-    fclose(f);
     if (!found) printf("Data tidak ditemukan.\n");
     pauseScreen();
 }
 
-//SUBMENU LIHAT//
-  
+//EDIT & HAPUS//
+void editStunting() {
+    clearScreen();
+    loadStunting();
+
+    int id = inputInt("Masukkan ID: ");
+    int idx = cariIndexStunting(id);
+
+    if (idx == -1) {
+        printf("ID tidak ditemukan!\n");
+        pauseScreen();
+        return;
+    }
+
+    inputString("Nama baru  : ", dataStunting[idx].nama, sizeof(dataStunting[idx].nama));
+    dataStunting[idx].umur = inputInt("Umur baru (bulan): ");
+    dataStunting[idx].tinggi = inputFloat("Tinggi baru (cm): ");
+    tentukanStatus(&dataStunting[idx]);
+
+    saveStunting();
+    printf("Data berhasil diupdate!\n");
+    pauseScreen();
+}
+
+void hapusStunting() {
+    clearScreen();
+    loadStunting();
+
+    int id = inputInt("Masukkan ID: ");
+    int idx = cariIndexStunting(id);
+
+    if (idx == -1) {
+        printf("ID tidak ditemukan!\n");
+        pauseScreen();
+        return;
+    }
+
+    for (int i = idx; i < jumlahStunting - 1; i++)
+        dataStunting[i] = dataStunting[i + 1];
+
+    jumlahStunting--;
+    saveStunting();
+
+    printf("Data berhasil dihapus!\n");
+    pauseScreen();
+}
+
+//SUB MENU LIHAT//
 void lihatStunting() {
     int p;
     do {
         clearScreen();
         printf("=== LIHAT DATA STUNTING ===\n");
         printf("1. Tampilkan Semua\n");
-        printf("2. Cari berdasarkan ID\n");
-        printf("3. Cari berdasarkan Nama\n");
+        printf("2. Cari Berdasarkan ID\n");
+        printf("3. Cari Berdasarkan Nama\n");
         printf("0. Kembali\n");
 
         p = inputInt("Pilih: ");
 
-        switch (p) {
-            case 1: tampilkanSemuaStunting(); break;
-            case 2: cariStuntingById(); break;
-            case 3: cariStuntingByNama(); break;
-        }
+        if (p == 1) tampilkanSemuaStunting();
+        else if (p == 2) cariStuntingById();
+        else if (p == 3) cariStuntingByNama();
+
     } while (p != 0);
 }
-//EDIT DATA//
-void editStunting() {
-    clearScreen();
-    int id = inputInt("Masukkan ID: ");
 
-    FILE *f = fopen(FILE_STUNTING, "r");
-    FILE *tmp = fopen(FILE_TMP, "w");
-    Stunting s;
-    int found = 0;
 
-    while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
-        &s.id, s.nama, &s.umur_bulan,
-        &s.tinggi, s.tanggal, s.status) != EOF) {
-
-        if (s.id == id) {
-            found = 1;
-            inputString("Nama baru: ", s.nama, sizeof(s.nama));
-            s.umur_bulan = inputInt("Umur baru (bulan): ");
-
-            printf("Tinggi baru (cm): ");
-            scanf("%f", &s.tinggi);
-            while (getchar() != '\n');
-
-            inputString("Tanggal baru: ", s.tanggal, sizeof(s.tanggal));
-            tentukanStatusStunting(&s);
-        }
-   fprintf(tmp, "%d|%s|%d|%.1f|%s|%s\n",
-                s.id, s.nama, s.umur_bulan,
-                s.tinggi, s.tanggal, s.status);
-    }
-
-    fclose(f);
-    fclose(tmp);
-    remove(FILE_STUNTING);
-    rename(FILE_TMP, FILE_STUNTING);
-
-    if (found) printf("Data berhasil diubah!\n");
-    else printf("ID tidak ditemukan.\n");
-    pauseScreen();
-}
-//HAPUS DATA//
-void hapusStunting() {
-    clearScreen();
-    int id = inputInt("Masukkan ID: ");
-
-    FILE *f = fopen(FILE_STUNTING, "r");
-    FILE *tmp = fopen(FILE_TMP, "w");
-    Stunting s;
-    int found = 0;
-
-    while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%19[^|]|%19[^\n]\n",
-        &s.id, s.nama, &s.umur_bulan,
-        &s.tinggi, s.tanggal, s.status) != EOF) {
-
-        if (s.id == id) {
-            found = 1;
-            continue;
-        }
-
-        fprintf(tmp, "%d|%s|%d|%.1f|%s|%s\n",
-                s.id, s.nama, s.umur_bulan,
-                s.tinggi, s.tanggal, s.status);
-    }
-   fclose(f);
-    fclose(tmp);
-    remove(FILE_STUNTING);
-    rename(FILE_TMP, FILE_STUNTING);
-
-    if (found) printf("Data berhasil dihapus!\n");
-    else printf("ID tidak ditemukan.\n");
-
-    pauseScreen();
-}
-
-/* =======================
-   MENU UTAMA
-   ======================= */
+//MENU UTAMA//
 void menuStunting() {
     int p;
     do {
@@ -295,10 +265,5 @@ void menuStunting() {
         else if (p == 3) editStunting();
         else if (p == 4) hapusStunting();
 
-    } while (p != 0);
+    } while (p != 0);
 }
-
-
-
-
-
