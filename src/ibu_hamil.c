@@ -59,7 +59,7 @@ void tentukanResiko(IbuHamil *i) {
         skor++;
 
     if (strcmp(i->statusHB, "Anemia") == 0 ||
-        strcmp(i->statusHB, "HB Tinggi") == 0)
+        strcmp(i->statusHB, "Polisitemia") == 0)
         skor++;
 
     if (i->usiaKehamilan < 12)
