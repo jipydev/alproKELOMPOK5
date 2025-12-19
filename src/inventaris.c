@@ -15,7 +15,23 @@ typedef struct
 }inventaris;
 
 
+//id
+int generateId() {
+    FILE *fp = fopen(FILE_INV, "r");
+    if (!fp) return 1;
 
+    inventaris i;
+    int lastId = 0;
+
+    while (fscanf(fp, "%d %s %d",
+                  &i.id, i.namaBarang, &i.stok) == 3) {
+        if (i.id > lastId)
+            lastId = i.id;
+    }
+
+    fclose(fp);
+    return lastId + 1;
+}
 //Fitur tambah 
 void tambahInv() {
     clearScreen();
@@ -35,7 +51,7 @@ void tambahInv() {
     }
 
     inventaris i;
-    i.id = count+1;
+    i.id = generateId();
 
     printf("Nama barang : ");
     scanf("%s", i.namaBarang);
@@ -88,22 +104,12 @@ clearScreen();
     inventaris i;
     int idCari;
     int found = 0;
-    printf("\n      === DATA INVENTARIS ===    \n");
-printf("------------------------------------------------\n");
-printf("| %-4s | %-20s | %-6s |\n", "ID", "Nama Barang", "Stok");
-printf("------------------------------------------------\n");
-
-while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
-    printf("| %-4d | %-20s | %-6d |\n",
-           i.id, i.namaBarang, i.stok);
-}
-
-printf("------------------------------------------------\n");
+    
 
     printf("Masukkan ID yang ingin diedit: ");
     scanf("%d", &idCari);
 
-    fp = fopen("db.txt", "r");
+    fp = fopen("in.txt", "r");
     temp = fopen("temp.txt", "w");
 
     if (fp == NULL || temp == NULL) {
@@ -129,6 +135,7 @@ printf("------------------------------------------------\n");
 
             
             found = 1;
+            printf("\nTekan 0 untuk kembali ke menu...");
         }
 
         fprintf(temp, "%d %s %d\n",
@@ -143,14 +150,17 @@ printf("------------------------------------------------\n");
 
     if (found)
         printf("Data berhasil diedit!\n");
+        
     else
         printf("ID tidak ditemukan!\n");
+  
 }
 void hapusInv() {
     clearScreen();
+
     FILE *fp, *temp;
     int idHapus;
-    inventaris i;
+    inventaris i, barangHapus;
     int ditemukan = 0;
 
     printf("Masukkan ID barang yang ingin dihapus: ");
@@ -159,35 +169,58 @@ void hapusInv() {
     fp = fopen(FILE_INV, "r");
     if (!fp) {
         printf("Data belum ada!\n");
+        pauseScreen();
         return;
     }
 
     temp = fopen("temp.txt", "w");
     if (!temp) {
         printf("Gagal membuat file sementara!\n");
+        pauseScreen();
         fclose(fp);
         return;
     }
 
-    while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
+    while (fscanf(fp, "%d %s %d",
+                  &i.id, i.namaBarang, &i.stok) == 3) {
+
         if (i.id == idHapus) {
-            ditemukan = 1;   
+            barangHapus = i;   // simpan data yang dihapus
+            ditemukan = 1;
         } else {
-            fprintf(temp, "%d %s %d\n", i.id, i.namaBarang, i.stok);
+            fprintf(temp, "%d %s %d\n",
+                    i.id, i.namaBarang, i.stok);
         }
     }
 
     fclose(fp);
     fclose(temp);
 
-    remove(FILE_INV);
-    rename("temp.txt", FILE_INV);
+    if (ditemukan) {
+        remove(FILE_INV);
+        rename("temp.txt", FILE_INV);
 
-    if (ditemukan)
-        printf("Barang dengan ID %d berhasil dihapus.\n", idHapus);
-    else
+        printf("\nBarang BERHASIL dihapus:\n");
+        printf("------------------------------------------------\n");
+        printf("| %-4s | %-20s | %-6s |\n", "ID", "Nama Barang", "Stok");
+        printf("------------------------------------------------\n");
+        printf("| %-4d | %-20s | %-6d |\n",
+               barangHapus.id,
+               barangHapus.namaBarang,
+               barangHapus.stok);
+        printf("------------------------------------------------\n");
+    } else {
+        remove("temp.txt");
         printf("ID tidak ditemukan.\n");
+    }
+
+    printf("\nTekan 0 untuk kembali ke menu...");
+    int back;
+    do {
+        scanf("%d", &back);
+    } while (back != 0);
 }
+
 void cariInv() {
     clearScreen();
     FILE *fp, *temp;
@@ -223,10 +256,9 @@ void cariInv() {
     }
 
     printf("------------------------------------------------\n");
-
     fclose(fp);
 
-    printf("\nTekan ENTER untuk kembali ke menu...");
+    printf("\nTekan 0 untuk kembali ke menu...");
     getchar();
     getchar();
 }
@@ -239,6 +271,7 @@ void cariInv() {
 void menuInventaris(){
     clearScreen();
 int pilih;
+do{
 printf("|=========================|\n");
 printf("|       Inventory         |\n");
 printf("|=========================|\n");
@@ -254,20 +287,18 @@ printf("|5.Cari Inventory         |\n");
 printf("|-------------------------|\n");
 printf("|0.Exit                   |\n");
 printf("|-------------------------|\n");
-pilih=inputInt ("Pilihan Anda :");
 
-switch (pilih)
-{
-case 1 : tampilkanSemuaInv();break;
-case 2 : tambahInv();break;
-case 3 : editInv();break;
-case 4 : hapusInv();break;
-case 5 : cariInv();break;
-case 6 : exit(0);break;
-default:
-    printf("Kesalahan");
+pilih=inputInt("Pilihan Anda : ");
+if (pilih==1) tampilkanSemuaInv();
+else if (pilih==2) tambahInv();
+else if (pilih==3) editInv();
+else if (pilih==4) hapusInv();
+else if (pilih==5) cariInv();
+
+} while (pilih !=0);
 }
-}
+
+
 
 
 

@@ -58,5 +58,7 @@ int main() {
                 printf("Pilihan tidak ada!\n");
                 pauseScreen();
         }
-    }
+    } while (pilih!=0)
+
+    return 0;
 }
