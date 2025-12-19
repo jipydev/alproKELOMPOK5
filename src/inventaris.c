@@ -68,7 +68,7 @@ void tampilkanSemuaInv() {
 
     inventaris i;
 
-    printf("\n=== DATA INVENTARIS ===\n");
+    printf("\n      === DATA INVENTARIS ===    \n");
 printf("------------------------------------------------\n");
 printf("| %-4s | %-20s | %-6s |\n", "ID", "Nama Barang", "Stok");
 printf("------------------------------------------------\n");
