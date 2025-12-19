@@ -18,6 +18,7 @@ typedef struct
 
 //Fitur tambah 
 void tambahInv() {
+    clearScreen();
     FILE *fp = fopen(FILE_INV, "r");
     int count = 0;
     inventaris temp;
@@ -58,6 +59,7 @@ pauseScreen();
 }
 // Tampilkan semua data
 void tampilkanSemuaInv() {
+    clearScreen();
      FILE *fp = fopen(FILE_INV, "r");
     if (!fp) {
         printf("Belum ada data.\n");
@@ -81,7 +83,7 @@ pauseScreen();
     fclose(fp);
 }
 void editInv(){
-
+clearScreen();
     FILE *fp, *temp;
     inventaris i;
     int idCari;
@@ -134,6 +136,7 @@ void editInv(){
         printf("ID tidak ditemukan!\n");
 }
 void hapusInv() {
+    clearScreen();
     FILE *fp, *temp;
     int idHapus;
     inventaris i;
