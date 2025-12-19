@@ -68,7 +68,7 @@ void tambahJadwal() {
     Jadwal j;
     j.id = id;
     inputString("Nama kegiatan: ", j.kegiatan, sizeof(j.kegiatan));
-    inputString("Tanggal (contoh: 12-09-2025): ", j.tanggal, sizeof(j.tanggal));
+    inputString("Tanggal (contoh: 22-12-2025): ", j.tanggal, sizeof(j.tanggal));
 
     fprintf(f, "%d|%s|%s\n", j.id, j.kegiatan, j.tanggal);
     fclose(f);
@@ -196,13 +196,21 @@ void lihatJadwal() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT JADWAL KEGIATAN ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Tampilkan Terurut (Tanggal)\n");
-        printf("3. Cari berdasarkan ID\n");
-        printf("4. Cari berdasarkan Nama\n");
-        printf("5. Cari berdasarkan Tanggal\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Inventory         |\n");
+printf("|=========================|\n");
+printf("|1.Tampilkan Semua Jadwal |\n");
+printf("|-------------------------|\n");
+printf("|2.Cari Jadwal Terurut    |\n");
+printf("|-------------------------|\n");
+printf("|3.Cari Jadwal By Id      |\n");
+printf("|-------------------------|\n");
+printf("|4.Cari Jadwal By Nama    |\n");
+printf("|-------------------------|\n");
+printf("|5.Cari Jadwal By Tanggal |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
@@ -282,12 +290,18 @@ void menuJadwal() {
     int p;
     do {
         clearScreen();
-        printf("=== CRUD JADWAL KEGIATAN ===\n");
-        printf("1. Tambah\n");
-        printf("2. Lihat\n");
-        printf("3. Edit\n");
-        printf("4. Hapus\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|         Jadwal          |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Jadwal          |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Jadwal           |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Jadwal            |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Jadwal           |\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
