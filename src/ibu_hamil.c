@@ -316,12 +316,19 @@ void menuIbuHamil() {
     int p;
     do {
         clearScreen();
-        printf("=== MENU IBU HAMIL ===\n");
-        printf("1. Tambah Data\n");
-        printf("2. Lihat Data\n");
-        printf("3. Edit Data\n");
-        printf("4. Hapus Data\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Data Ibu Hamil    |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Data            |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Data             |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Data              |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Data             |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
