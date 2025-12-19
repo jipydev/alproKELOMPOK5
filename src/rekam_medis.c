@@ -36,6 +36,19 @@ void loadRekam() {
     fclose(f);
 }
 
+void saveRekam() {
+    FILE *f = fopen(FILE_REKAM, "w");
+    if (!f) return;
+
+    for (int i = 0; i < jumlahRekam; i++) {
+        fprintf(f, "%d|%s|%s\n",
+            dataRekam[i].id,
+            dataRekam[i].nama,
+            dataRekam[i].keluhan);
+    }
+    fclose(f);
+}
+
 /* =======================
    SEARCHING (SEQUENTIAL)
    ======================= */
@@ -100,7 +113,7 @@ void tampilkanSemuaRekam() {
 
     printf("=== DATA REKAM MEDIS ===\n");
     for (int i = 0; i < jumlahRekam; i++) {
-        printf("ID:%d | %s | Keluhan:%s\n",
+        printf("ID:%d | Nama:%s | Keluhan:%s\n",
             dataRekam[i].id,
             dataRekam[i].nama,
             dataRekam[i].keluhan);
@@ -136,7 +149,7 @@ void cariRekamByNama() {
     int found = 0;
     for (int i = 0; i < jumlahRekam; i++) {
         if (strstr(dataRekam[i].nama, key)) {
-            printf("ID:%d | %s | Keluhan:%s\n",
+            printf("ID:%d | Nama:%s | Keluhan:%s\n",
                 dataRekam[i].id,
                 dataRekam[i].nama,
                 dataRekam[i].keluhan);
