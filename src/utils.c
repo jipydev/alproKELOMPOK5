@@ -1,9 +1,12 @@
 #include <stdio.h>
-#include <stdlib.h>`
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "utils.h"
 
+/* ======================
+   BERSIHKAN LAYAR
+   ====================== */
 void clearScreen() {
 #ifdef _WIN32
     system("cls");
@@ -12,41 +15,78 @@ void clearScreen() {
 #endif
 }
 
+/* ======================
+   JEDA LAYAR
+   ====================== */
 void pauseScreen() {
     printf("\nTekan ENTER untuk melanjutkan...");
     getchar();
 }
 
+/* ======================
+   INPUT INTEGER (FIX BUG 1B)
+   ====================== */
 int inputInt(const char *msg) {
     char buffer[50];
-    int value;
+
     while (1) {
+        int valid = 1;
         printf("%s", msg);
         fgets(buffer, sizeof(buffer), stdin);
-        if (sscanf(buffer, "%d", &value) == 1)
-            return value;
+
+        buffer[strcspn(buffer, "\n")] = '\0';
+
+        if (strlen(buffer) == 0) {
+            printf("Input harus angka!\n");
+            continue;
+        }
+
+        for (int i = 0; buffer[i] != '\0'; i++) {
+            if (!isdigit(buffer[i])) {
+                valid = 0;
+                break;
+            }
+        }
+
+        if (valid) {
+            return atoi(buffer);
+        }
+
         printf("Input harus angka!\n");
     }
 }
 
+/* ======================
+   INPUT FLOAT (AMAN)
+   ====================== */
 float inputFloat(const char *msg) {
     char buffer[50];
     float value;
+    char extra;
+
     while (1) {
         printf("%s", msg);
         fgets(buffer, sizeof(buffer), stdin);
-        if (sscanf(buffer, "%f", &value) == 1)
+
+        if (sscanf(buffer, "%f %c", &value, &extra) == 1)
             return value;
+
         printf("Input harus angka desimal!\n");
     }
 }
 
+/* ======================
+   INPUT STRING
+   ====================== */
 void inputString(const char *msg, char *buffer, int size) {
     printf("%s", msg);
     fgets(buffer, size, stdin);
     buffer[strcspn(buffer, "\n")] = '\0';
 }
 
+/* ======================
+   VALIDASI TANGGAL (dd-mm-yyyy)
+   ====================== */
 int validTanggal(const char *tgl) {
     if (strlen(tgl) != 10) return 0;
 
