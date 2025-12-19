@@ -127,7 +127,7 @@ void tampilkanSemuaStunting() {
 
     printf("=== DATA CEK STUNTING BALITA ===\n");
     for (int i = 0; i < jumlahStunting; i++) {
-        printf("ID:%d | %s | Umur:%d bln | %.1f cm | %s\n",
+        printf("ID:%d | Nama:%s | Umur:%d bln | TB:%.1f cm | Status:%s\n",
             dataStunting[i].id,
             dataStunting[i].nama,
             dataStunting[i].umur,
@@ -147,7 +147,7 @@ void cariStuntingById() {
     if (idx == -1)
         printf("Data tidak ditemukan.\n");
     else
-        printf("Nama:%s\nUmur:%d bln\nTinggi:%.1f cm\nStatus:%s\n",
+        printf("Nama:%s\nUmur:%d bln\nTB:%.1f cm\nStatus:%s\n",
             dataStunting[idx].nama,
             dataStunting[idx].umur,
             dataStunting[idx].tinggi,
@@ -166,9 +166,10 @@ void cariStuntingByNama() {
     int found = 0;
     for (int i = 0; i < jumlahStunting; i++) {
         if (strstr(dataStunting[i].nama, key)) {
-            printf("ID:%d | %s | %s\n",
+            printf("ID:%d | Nama:%s | TB:%.1f | Status:%s\n",
                 dataStunting[i].id,
                 dataStunting[i].nama,
+                dataStunting[i].tinggi,
                 dataStunting[i].status);
             found = 1;
         }
