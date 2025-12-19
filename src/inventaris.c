@@ -52,13 +52,15 @@ void tambahInv() {
 
     inventaris i;
     i.id = generateId();
-
-    printf("Nama barang : ");
-    scanf("%s", i.namaBarang);
-
-    printf("Jumlah: ");
-    scanf("%d", &i.stok);
-    getchar();
+printf("=====================================\n");
+printf("|        TAMBAH DATA BARANG          |\n");
+printf("=====================================\n");
+printf("| Nama Barang : ");
+scanf(" %s", i.namaBarang);
+printf("| Jumlah      : ");
+scanf("%d", &i.stok);
+printf("=====================================\n");
+ getchar();
 
     fp = fopen(FILE_INV, "a");
 if (!fp) {
@@ -95,7 +97,8 @@ while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
 }
 
 printf("------------------------------------------------\n");
-pauseScreen();
+printf("Tekan 0 Untuk Melanjutkan..");
+getchar();
     fclose(fp);
 }
 void editInv(){
@@ -105,9 +108,12 @@ clearScreen();
     int idCari;
     int found = 0;
     
-
+printf("=====================================\n");
+printf("|            EDIT BARANG             |\n");
+printf("=====================================\n");
     printf("Masukkan ID yang ingin diedit: ");
     scanf("%d", &idCari);
+printf("=====================================\n");
 
     fp = fopen("in.txt", "r");
     temp = fopen("temp.txt", "w");
@@ -185,7 +191,7 @@ void hapusInv() {
                   &i.id, i.namaBarang, &i.stok) == 3) {
 
         if (i.id == idHapus) {
-            barangHapus = i;   // simpan data yang dihapus
+            barangHapus = i;   
             ditemukan = 1;
         } else {
             fprintf(temp, "%d %s %d\n",
