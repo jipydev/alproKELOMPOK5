@@ -233,7 +233,7 @@ printf("|3.Edit Barang            |\n");
 printf("|-------------------------|\n");
 printf("|4.Hapus Barang           |\n");
 printf("|-------------------------|\n");
-printf("|0.Exit                   |\n");
+printf("|5.Cari Inventory         |\n");
 printf("|-------------------------|\n");
 pilih=inputInt ("Pilihan Anda :");
 
@@ -243,7 +243,8 @@ case 1 : tampilkanSemuaInv();break;
 case 2 : tambahInv();break;
 case 3 : editInv();break;
 case 4 : hapusInv();break;
-case 5 : exit(0);break;
+case 5 : hapusInv();break;
+case 6 : exit();break;
 default:
     printf("Kesalahan");
 }
