@@ -72,7 +72,7 @@ pauseScreen();
 }
 // Tampilkan semua data
 void tampilkanSemuaInv() {
-    FILE *fp = fopen(FILE_INV, "r");
+     FILE *fp = fopen(FILE_INV, "r");
     if (!fp) {
         printf("Belum ada data.\n");
         return;
@@ -81,16 +81,10 @@ void tampilkanSemuaInv() {
     inventaris i;
     printf("\n=== DATA INVENTARIS ===\n");
 
-   for (int x ; x<BATAS ; x++) {
-    int cek = fscanf(fp, "%d %s %d",
-                     &i.id, i.namaBarang, &i.stok);
-
-    if (cek != 3) {
-        break; 
-    }
+    while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
         printf("ID:%d | %s | %d pcs\n", i.id, i.namaBarang, i.stok);
     }
-
+pauseScreen();
     fclose(fp);
 }
 void editInv(){
@@ -173,9 +167,9 @@ pilih=inputInt ("Pilihan Anda :");
 switch (pilih)
 {
 case 1 : tampilkanSemuaInv();break;
-   case 2 : tambahInv();break;
-   case 3 : editInv();break;
-   case 4 : exit(0);
+case 2 : tambahInv();break;
+case 3 : editInv();break;
+case 4 : exit(0);
 
 default:
     printf("Kesalahan");
