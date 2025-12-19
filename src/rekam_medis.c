@@ -255,3 +255,7 @@ void menuRekam() {
 
     } while (p != 0);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8193ca41564e2c33f8d60599f6d772319710bebc
