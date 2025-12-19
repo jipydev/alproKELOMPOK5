@@ -98,7 +98,7 @@ void tampilkanSemuaWarga() {
 
     printf("=== DATA WARGA ===\n");
     for (int i = 0; i < jumlahWarga; i++) {
-        printf("ID:%d | %s | %s | Umur:%d\n",
+        printf("ID:%d | Nama:%s | Alamat:%s | Umur:%d\n",
                warga[i].id,
                warga[i].nama,
                warga[i].alamat,
@@ -136,7 +136,7 @@ void cariWargaByNama() {
     int found = 0;
     for (int i = 0; i < jumlahWarga; i++) {
         if (strstr(warga[i].nama, key)) {
-            printf("ID:%d | %s | %s | %d\n",
+            printf("ID:%d | Nama:%s | Alamat:%s | Umur:%d\n",
                    warga[i].id,
                    warga[i].nama,
                    warga[i].alamat,
