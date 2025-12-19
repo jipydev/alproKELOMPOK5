@@ -88,6 +88,17 @@ clearScreen();
     inventaris i;
     int idCari;
     int found = 0;
+    printf("\n      === DATA INVENTARIS ===    \n");
+printf("------------------------------------------------\n");
+printf("| %-4s | %-20s | %-6s |\n", "ID", "Nama Barang", "Stok");
+printf("------------------------------------------------\n");
+
+while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
+    printf("| %-4d | %-20s | %-6d |\n",
+           i.id, i.namaBarang, i.stok);
+}
+
+printf("------------------------------------------------\n");
 
     printf("Masukkan ID yang ingin diedit: ");
     scanf("%d", &idCari);
@@ -185,34 +196,40 @@ void cariInv() {
     int ditemukan = 0;
 
     printf("Masukkan Nama barang yang ingin dicari: ");
-    scanf("%s", namaInv);
+    scanf(" %s", namaInv);
 
     fp = fopen(FILE_INV, "r");
     if (!fp) {
         printf("Data belum ada!\n");
         return;
     }
-    printf("\n=== HASIL PENCARIAN ===\n");
+    printf("------------------------------------------------\n");
+    printf("| %-4s | %-20s | %-6s |\n", "ID", "Nama Barang", "Stok");
+    printf("------------------------------------------------\n");
 
-    while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
+    while (fscanf(fp, "%d %s %d",
+                  &i.id, i.namaBarang, &i.stok) == 3) {
 
         if (strcmp(i.namaBarang, namaInv) == 0) {
-            printf("ID   : %d\n", i.id);
-            printf("Nama : %s\n", i.namaBarang);
-            printf("Stok : %d pcs\n", i.stok);
+            printf("| %-4d | %-20s | %-6d |\n",
+                   i.id, i.namaBarang, i.stok);
             ditemukan = 1;
-            break; 
+            break;
         }
     }
 
     if (!ditemukan) {
-        printf("Barang dengan nama '%s' tidak ditemukan.\n", namaInv);
+        printf("| %-4s | %-20s | %-6s |\n", "-", "Data tidak ditemukan", "-");
     }
 
-    fclose(fp);
-}
-    
+    printf("------------------------------------------------\n");
 
+    fclose(fp);
+
+    printf("\nTekan ENTER untuk kembali ke menu...");
+    getchar();
+    getchar();
+}
 
 
 
@@ -235,6 +252,8 @@ printf("|4.Hapus Barang           |\n");
 printf("|-------------------------|\n");
 printf("|5.Cari Inventory         |\n");
 printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 pilih=inputInt ("Pilihan Anda :");
 
 switch (pilih)
@@ -243,7 +262,7 @@ case 1 : tampilkanSemuaInv();break;
 case 2 : tambahInv();break;
 case 3 : editInv();break;
 case 4 : hapusInv();break;
-case 5 : hapusInv();break;
+case 5 : cariInv();break;
 case 6 : exit(0);break;
 default:
     printf("Kesalahan");
