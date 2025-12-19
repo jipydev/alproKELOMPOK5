@@ -1,4 +1,2 @@
-
-1 dirga 10
-1 d 90
-1 e 1
+1 paracetamol 30
+2 popok 20
