@@ -75,7 +75,7 @@ void tambahWarga() {
     pauseScreen();
 }
 
-/* ===== SORT + TAMPIL ===== */
+
 void tampilkanSemuaWarga() {
     clearScreen();
 

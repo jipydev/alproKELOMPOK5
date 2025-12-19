@@ -24,7 +24,7 @@ void pauseScreen() {
 }
 
 /* ======================
-   INPUT INTEGER (FIX BUG 1B)
+   INPUT INTEGER ONLY
    ====================== */
 int inputInt(const char *msg) {
     char buffer[50];
@@ -57,7 +57,7 @@ int inputInt(const char *msg) {
 }
 
 /* ======================
-   INPUT FLOAT (AMAN)
+   INPUT FLOAT 
    ====================== */
 float inputFloat(const char *msg) {
     char buffer[50];
@@ -85,7 +85,7 @@ void inputString(const char *msg, char *buffer, int size) {
 }
 
 /* ======================
-   VALIDASI TANGGAL (dd-mm-yyyy)
+   VALIDASI TANGGAL TANGGAL
    ====================== */
 int validTanggal(const char *tgl) {
     if (strlen(tgl) != 10) return 0;
