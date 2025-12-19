@@ -24,7 +24,7 @@ typedef struct {
    ======================= */
 void tentukanResiko(IbuHamil *i) {
     if (i->usiaKehamilan < 12 || i->beratBadan < 45)
-        strcpy(i->resiko, "RESIKO TINGGI");
+        strcpy(i->resiko, "TINGGI");
     else
         strcpy(i->resiko, "NORMAL");
 }
@@ -116,15 +116,22 @@ void tampilkanSemuaIbuHamil() {
         }
     }
 
-    printf("=== DATA IBU HAMIL ===\n");
-    for (int i = 0; i < n; i++) {
-        printf("ID:%d | %s | %d mg | %.2f kg | %s\n",
-               data[i].id,
-               data[i].nama,
-               data[i].usiaKehamilan,
-               data[i].beratBadan,
-               data[i].resiko);
-    }
+printf("\n===================== DATA IBU HAMIL ==============================\n");
+printf("-------------------------------------------------------------------\n");
+printf("| %-3s | %-15s | %-10s | %-10s | %-10s    |\n",
+       "ID", "Nama", "Usia (mg)", "Berat (kg)", "RESIKO");
+printf("------------------------------------------------------------------\n");
+
+for (int i = 0; i < n; i++) {
+printf("| %-3d | %-15s | %-10d | %-10.2f | %-10s |\n",
+           data[i].id,
+           data[i].nama,
+           data[i].usiaKehamilan,
+           data[i].beratBadan,
+           data[i].resiko);
+}
+
+printf("------------------------------------------------------------------\n");
 
     pauseScreen();
 }
@@ -211,11 +218,17 @@ void lihatIbuHamil() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT DATA IBU HAMIL ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari Berdasarkan ID\n");
-        printf("3. Cari Berdasarkan Nama\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Data Ibu Hamil    |\n");
+printf("|=========================|\n");
+printf("|1.Tampilkan Semua        |\n");
+printf("|-------------------------|\n");
+printf("|2.Cari By ID             |\n");
+printf("|-------------------------|\n");
+printf("|3.Cari By Nama           |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
