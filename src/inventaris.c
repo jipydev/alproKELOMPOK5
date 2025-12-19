@@ -160,7 +160,7 @@ void hapusInv() {
 
     while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
         if (i.id == idHapus) {
-            ditemukan = 1;   // data dilewati (dihapus)
+            ditemukan = 1;   
         } else {
             fprintf(temp, "%d %s %d\n", i.id, i.namaBarang, i.stok);
         }
@@ -177,6 +177,42 @@ void hapusInv() {
     else
         printf("ID tidak ditemukan.\n");
 }
+void cariInv() {
+    clearScreen();
+    FILE *fp, *temp;
+    char namaInv[50];
+    inventaris i;
+    int ditemukan = 0;
+
+    printf("Masukkan Nama barang yang ingin dicari: ");
+    scanf("%s", namaInv);
+
+    fp = fopen(FILE_INV, "r");
+    if (!fp) {
+        printf("Data belum ada!\n");
+        return;
+    }
+    printf("\n=== HASIL PENCARIAN ===\n");
+
+    while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
+
+        if (strcmp(i.namaBarang, namaInv) == 0) {
+            printf("ID   : %d\n", i.id);
+            printf("Nama : %s\n", i.namaBarang);
+            printf("Stok : %d pcs\n", i.stok);
+            ditemukan = 1;
+            break; 
+        }
+    }
+
+    if (!ditemukan) {
+        printf("Barang dengan nama '%s' tidak ditemukan.\n", namaInv);
+    }
+
+    fclose(fp);
+}
+    
+
 
 
 
