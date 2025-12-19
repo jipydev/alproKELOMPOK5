@@ -89,7 +89,7 @@ void tambahIbuHamil() {
             &i.id, i.nama, &i.usiaKehamilan,
             &i.beratBadan, &i.tinggiBadan,
             &i.hb, &i.bmi,
-            i.statusBMI, i.statusHB, i.resiko) != EOF) {
+            i.statusBMI, i.statusHB, i.resiko) == 10) {
             if (i.id == id) {
                 printf("ID sudah terdaftar!\n");
                 fclose(f);
@@ -148,7 +148,7 @@ void tampilkanSemuaIbuHamil() {
         &data[n].beratBadan, &data[n].tinggiBadan,
         &data[n].hb, &data[n].bmi,
         data[n].statusBMI, data[n].statusHB,
-        data[n].resiko) != EOF) {
+        data[n].resiko) == 10) {
         n++;
     }
     fclose(f);
@@ -196,7 +196,7 @@ void cariIbuHamilById() {
         &i.id, i.nama, &i.usiaKehamilan,
         &i.beratBadan, &i.tinggiBadan,
         &i.hb, &i.bmi,
-        i.statusBMI, i.statusHB, i.resiko) != EOF) {
+        i.statusBMI, i.statusHB, i.resiko) == 10) {
 
         if (i.id == id) {
             printf("Nama: %s\nBMI: %.2f (%s)\nHB: %.2f (%s)\nResiko: %s\n",
@@ -235,7 +235,7 @@ void cariIbuHamilByNama() {
         &i.id, i.nama, &i.usiaKehamilan,
         &i.beratBadan, &i.tinggiBadan,
         &i.hb, &i.bmi,
-        i.statusBMI, i.statusHB, i.resiko) != EOF) {
+        i.statusBMI, i.statusHB, i.resiko) == 10) {
 
         if (strstr(i.nama, key)) {
             printf("ID:%d | %s | %s\n", i.id, i.nama, i.resiko);
@@ -268,7 +268,7 @@ void editIbuHamil() {
         &i.id, i.nama, &i.usiaKehamilan,
         &i.beratBadan, &i.tinggiBadan,
         &i.hb, &i.bmi,
-        i.statusBMI, i.statusHB, i.resiko) != EOF) {
+        i.statusBMI, i.statusHB, i.resiko) == 10) {
 
         if (i.id == id) {
             found = 1;
@@ -321,7 +321,7 @@ void hapusIbuHamil() {
         &i.id, i.nama, &i.usiaKehamilan,
         &i.beratBadan, &i.tinggiBadan,
         &i.hb, &i.bmi,
-        i.statusBMI, i.statusHB, i.resiko) != EOF) {
+        i.statusBMI, i.statusHB, i.resiko) == 10) {
 
         if (i.id == id) {
             found = 1;
