@@ -191,12 +191,21 @@ void lihatKeuangan() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT LAPORAN KEUANGAN ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari berdasarkan ID\n");
-        printf("3. Cari berdasarkan Jenis\n");
-        printf("4. Cari berdasarkan Tanggal\n");
-        printf("0. Kembali\n");
+printf("|==========================|\n");
+printf("|       Inventory          |\n");
+printf("|==========================|\n");
+printf("|1.Lihat Semua             |\n");
+printf("|--------------------------|\n");
+printf("|2.Cari Keuangan By Id     |\n");
+printf("|--------------------------|\n");
+printf("|3.Cari Keuangan By Jenis  |\n");
+printf("|--------------------------|\n");
+printf("|4.Cari Keuangan By Tanggal|\n");
+printf("|--------------------------|\n");
+printf("|5.Cari Inventory          |\n");
+printf("|--------------------------|\n");
+printf("|0.Exit                    |\n");
+printf("|--------------------------|\n");
 
         p = inputInt("Pilih: ");
 
@@ -283,12 +292,19 @@ void menuKeuangan() {
     int p;
     do {
         clearScreen();
-        printf("=== MENU LAPORAN KEUANGAN ===\n");
-        printf("1. Tambah Data\n");
-        printf("2. Lihat Data\n");
-        printf("3. Edit Data\n");
-        printf("4. Hapus Data\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|        Keuangan         |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Data Keuangan   |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Data Keuangan    |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Data Keuangan     |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Data             |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
