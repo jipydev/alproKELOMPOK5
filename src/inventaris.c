@@ -244,7 +244,7 @@ case 2 : tambahInv();break;
 case 3 : editInv();break;
 case 4 : hapusInv();break;
 case 5 : hapusInv();break;
-case 6 : exit();break;
+case 6 : exit(0);break;
 default:
     printf("Kesalahan");
 }
