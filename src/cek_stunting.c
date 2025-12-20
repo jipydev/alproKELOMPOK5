@@ -163,6 +163,12 @@ void cariStuntingByNama() {
     char key[50];
     inputString("Masukkan nama: ", key, sizeof(key));
 
+    if (strlen(key) == 0) {
+        printf("Nama tidak boleh kosong!\n");
+        pauseScreen();
+        return;
+    }
+
     int found = 0;
     for (int i = 0; i < jumlahStunting; i++) {
         if (strstr(dataStunting[i].nama, key)) {
@@ -175,9 +181,12 @@ void cariStuntingByNama() {
         }
     }
 
-    if (!found) printf("Data tidak ditemukan.\n");
+    if (!found)
+        printf("Data tidak ditemukan.\n");
+
     pauseScreen();
 }
+
 
 //EDIT & HAPUS//
 void editStunting() {
