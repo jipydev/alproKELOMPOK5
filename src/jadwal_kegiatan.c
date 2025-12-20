@@ -319,60 +319,111 @@ printf("|-------------------------|\n");
    ===================================================== */
 void editJadwal() {
     clearScreen();
-    int id = inputInt("Masukkan ID (0 = batal): ");
-    if (id == 0) return;
+
+    printf("========================================\n");
+    printf("           EDIT JADWAL KEGIATAN           \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Jadwal (0 = batal) : ");
+    if (id == 0) {
+        printf("\nProses edit dibatalkan.\n");
+        pauseScreen();
+        return;
+    }
 
     FILE *f = fopen(FILE_JADWAL, "r");
     FILE *tmp = fopen(FILE_TEMP, "w");
     Jadwal j;
     int found = 0;
 
-    while (f && fscanf(f, "%d|%49[^|]|%29[^\n]\n",
-                       &j.id, j.kegiatan, j.tanggal) != EOF) {
+    if (!f || !tmp) {
+        printf("\n[!] Gagal membuka file jadwal.\n");
+        pauseScreen();
+        return;
+    }
+
+    while (fscanf(f, "%d|%49[^|]|%29[^\n]\n",
+                  &j.id, j.kegiatan, j.tanggal) != EOF) {
+
         if (j.id == id) {
             found = 1;
-            inputString("Nama kegiatan baru: ", j.kegiatan, sizeof(j.kegiatan));
-            inputString("Tanggal baru: ", j.tanggal, sizeof(j.tanggal));
+
+            printf("\nData Lama\n");
+            printf("----------------------------------------\n");
+            printf("Nama Kegiatan : %s\n", j.kegiatan);
+            printf("Tanggal       : %s\n", j.tanggal);
+            printf("----------------------------------------\n");
+
+            printf("\nMasukkan Data Baru\n");
+            inputString("Nama Kegiatan : ", j.kegiatan, sizeof(j.kegiatan));
+            inputString("Tanggal (dd-mm-yyyy): ", j.tanggal, sizeof(j.tanggal));
         }
+
         fprintf(tmp, "%d|%s|%s\n", j.id, j.kegiatan, j.tanggal);
     }
 
-    if (f) fclose(f);
+    fclose(f);
     fclose(tmp);
     remove(FILE_JADWAL);
     rename(FILE_TEMP, FILE_JADWAL);
 
-    printf(found ? "Jadwal diperbarui!\n" : "ID tidak ditemukan!\n");
+    if (found)
+        printf("\n[✓] Jadwal berhasil diperbarui!\n");
+    else
+        printf("\n[!] ID tidak ditemukan.\n");
+
     pauseScreen();
 }
 
-void hapusJadwal() {
+vvoid hapusJadwal() {
     clearScreen();
-    int id = inputInt("Masukkan ID (0 = batal): ");
-    if (id == 0) return;
+
+    printf("========================================\n");
+    printf("          HAPUS JADWAL KEGIATAN           \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Jadwal (0 = batal) : ");
+    if (id == 0) {
+        printf("\nProses penghapusan dibatalkan.\n");
+        pauseScreen();
+        return;
+    }
 
     FILE *f = fopen(FILE_JADWAL, "r");
     FILE *tmp = fopen(FILE_TEMP, "w");
     Jadwal j;
     int found = 0;
 
-    while (f && fscanf(f, "%d|%49[^|]|%29[^\n]\n",
-                       &j.id, j.kegiatan, j.tanggal) != EOF) {
+    if (!f || !tmp) {
+        printf("\n[!] Gagal membuka file jadwal.\n");
+        pauseScreen();
+        return;
+    }
+
+    while (fscanf(f, "%d|%49[^|]|%29[^\n]\n",
+                  &j.id, j.kegiatan, j.tanggal) != EOF) {
+
         if (j.id == id) {
             found = 1;
             continue;
         }
+
         fprintf(tmp, "%d|%s|%s\n", j.id, j.kegiatan, j.tanggal);
     }
 
-    if (f) fclose(f);
+    fclose(f);
     fclose(tmp);
     remove(FILE_JADWAL);
     rename(FILE_TEMP, FILE_JADWAL);
 
-    printf(found ? "Jadwal dihapus!\n" : "ID tidak ditemukan!\n");
+    if (found)
+        printf("\n[✓] Jadwal berhasil dihapus!\n");
+    else
+        printf("\n[!] ID tidak ditemukan.\n");
+
     pauseScreen();
 }
+
 
 /* =====================================================
    MENU UTAMA
