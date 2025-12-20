@@ -27,7 +27,7 @@ void tambahKeuangan() {
     FILE *f = fopen(FILE_KEUANGAN, "r");
     Keuangan k;
 
-    // cek ID duplikat
+    // cek ID
     if (f) {
         while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
                       &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
