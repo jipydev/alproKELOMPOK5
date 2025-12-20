@@ -26,12 +26,11 @@ int loadJadwal(Jadwal data[], int max) {
     fclose(f);
     return n;
 }
-
-/* Bubble Sort berdasarkan tanggal */
-void sortJadwalByTanggal(Jadwal data[], int n) {
+/* Bubble Sort berdasarkan ID */
+void sortJadwalById(Jadwal data[], int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
-            if (strcmp(data[j].tanggal, data[j + 1].tanggal) > 0) {
+            if (data[j].id > data[j + 1].id) {
                 Jadwal temp = data[j];
                 data[j] = data[j + 1];
                 data[j + 1] = temp;
@@ -39,6 +38,7 @@ void sortJadwalByTanggal(Jadwal data[], int n) {
         }
     }
 }
+
 
 /* =====================================================
    TAMBAH DATA
@@ -92,35 +92,21 @@ void tampilkanSemuaJadwal() {
         return;
     }
 
-    printf("=== DAFTAR JADWAL KEGIATAN ===\n");
+    sortJadwalById(data, n);
+
+    printf("=== DAFTAR JADWAL KEGIATAN (URUT ID) ===\n");
+
     for (int i = 0; i < n; i++) {
-        printf("ID:%d | %s | %s\n",
-               data[i].id, data[i].kegiatan, data[i].tanggal);
+        printf("ID:%d | Kegiatan:%s | Tanggal:%s\n",
+               data[i].id,
+               data[i].kegiatan,
+               data[i].tanggal);
     }
+
     pauseScreen();
 }
 
-void tampilkanJadwalTerurut() {
-    clearScreen();
 
-    Jadwal data[MAX_DATA];
-    int n = loadJadwal(data, MAX_DATA);
-
-    if (n == 0) {
-        printf("Belum ada data jadwal.\n");
-        pauseScreen();
-        return;
-    }
-
-    sortJadwalByTanggal(data, n);
-
-    printf("=== JADWAL TERURUT BERDASARKAN TANGGAL ===\n");
-    for (int i = 0; i < n; i++) {
-        printf("ID:%d | %s | %s\n",
-               data[i].id, data[i].kegiatan, data[i].tanggal);
-    }
-    pauseScreen();
-}
 
 /* =====================================================
    SEARCHING
@@ -157,7 +143,7 @@ void cariJadwalByNama() {
 
     for (int i = 0; i < n; i++) {
         if (strstr(data[i].kegiatan, key)) {
-            printf("ID:%d | %s | %s\n",
+            printf("ID:%d | Kegiatan:%s | Tanggal:%s\n",
                    data[i].id, data[i].kegiatan, data[i].tanggal);
             found = 1;
         }
@@ -179,7 +165,7 @@ void cariJadwalByTanggal() {
     printf("\n=== JADWAL TANGGAL %s ===\n", key);
     for (int i = 0; i < n; i++) {
         if (strcmp(data[i].tanggal, key) == 0) {
-            printf("ID:%d | %s\n",
+            printf("ID:%d | Kegiatan:%s\n",
                    data[i].id, data[i].kegiatan);
             found = 1;
         }
@@ -198,19 +184,17 @@ void lihatJadwal() {
         clearScreen();
         printf("=== LIHAT JADWAL KEGIATAN ===\n");
         printf("1. Tampilkan Semua\n");
-        printf("2. Tampilkan Terurut (Tanggal)\n");
-        printf("3. Cari berdasarkan ID\n");
-        printf("4. Cari berdasarkan Nama\n");
-        printf("5. Cari berdasarkan Tanggal\n");
+        printf("2. Cari berdasarkan ID\n");
+        printf("3. Cari berdasarkan Nama\n");
+        printf("4. Cari berdasarkan Tanggal\n");
         printf("0. Kembali\n");
 
         p = inputInt("Pilih: ");
 
         if (p == 1) tampilkanSemuaJadwal();
-        else if (p == 2) tampilkanJadwalTerurut();
-        else if (p == 3) cariJadwalById();
-        else if (p == 4) cariJadwalByNama();
-        else if (p == 5) cariJadwalByTanggal();
+        else if (p == 2) cariJadwalById();
+        else if (p == 3) cariJadwalByNama();
+        else if (p == 4) cariJadwalByTanggal();
 
     } while (p != 0);
 }
