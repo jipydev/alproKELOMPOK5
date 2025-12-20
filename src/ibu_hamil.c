@@ -423,11 +423,17 @@ void lihatIbuHamil() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT DATA IBU HAMIL ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari Berdasarkan ID\n");
-        printf("3. Cari Berdasarkan Nama\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|     Data Ibu Hamil      |\n");
+printf("|=========================|\n");
+printf("|1.Lihat Semua            |\n");
+printf("|-------------------------|\n");
+printf("|2.Cari Data By Id        |\n");
+printf("|-------------------------|\n");
+printf("|3.Cari Data By Nama      |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 

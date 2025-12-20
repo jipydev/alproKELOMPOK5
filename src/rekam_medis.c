@@ -244,14 +244,6 @@ void menuRekam() {
     int p;
     do {
         clearScreen();
-<<<<<<< HEAD
-        printf("=== MENU REKAM MEDIS ===\n");
-        printf("1. Tambah Data\n");
-        printf("2. Lihat Data\n");
-        printf("3. Edit Data\n");
-        printf("4. Hapus Data\n");
-        printf("0. Kembali\n");
-=======
 printf("|=========================|\n");
 printf("|       Rekam Medis       |\n");
 printf("|=========================|\n");
@@ -265,7 +257,6 @@ printf("|4.Hapus Data             |\n");
 printf("|-------------------------|\n");
 printf("|0.Exit                   |\n");
 printf("|-------------------------|\n");
->>>>>>> Dirga
 
         p = inputInt("Pilih: ");
 
