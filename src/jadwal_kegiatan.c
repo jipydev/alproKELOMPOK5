@@ -66,7 +66,7 @@ void tambahJadwal() {
     for (int i = 0; i < n; i++) {
         if (data[i].id == id) {
             printf("\n========================================\n");
-            printf("[!] ID Jadwal sudah terdaftar!\n");
+            printf("ID Jadwal sudah terdaftar!\n");
             printf("========================================\n");
             pauseScreen();
             return;
@@ -75,7 +75,7 @@ void tambahJadwal() {
 
     FILE *f = fopen(FILE_JADWAL, "a");
     if (!f) {
-        printf("\n[!] Gagal membuka file jadwal!\n");
+        printf("\nGagal membuka file jadwal!\n");
         pauseScreen();
         return;
     }
@@ -91,7 +91,7 @@ void tambahJadwal() {
     fprintf(f, "%d|%s|%s\n", j.id, j.kegiatan, j.tanggal);
     fclose(f);
 
-    printf("\n[✓] Jadwal berhasil ditambahkan!\n");
+    printf("\nJadwal berhasil ditambahkan!\n");
     pauseScreen();
 }
 
@@ -253,6 +253,20 @@ void lihatJadwal() {
         printf("4. Cari berdasarkan Tanggal\n");
         printf("0. Kembali\n");
 
+        printf("|===================================|\n");
+        printf("|       Lihat Jadwal Kegiatan       |\n");
+        printf("|===================================|\n");
+        printf("|1.Tampilkan Semua Jadwal |\n");
+        printf("|-------------------------|\n");
+        printf("|2.Cari Jadwal By Id      |\n");
+        printf("|-------------------------|\n");
+        printf("|3.Cari Jadwal By Nama    |\n");
+        printf("|-------------------------|\n");
+        printf("|4.Cari Jadwal By Tanggal |\n");
+        printf("|-------------------------|\n");
+        printf("|0.Exit                   |\n");
+        printf("|-------------------------|\n");
+
         p = inputInt("Pilih: ");
 
         if (p == 1) tampilkanSemuaJadwal();
@@ -317,9 +331,9 @@ void editJadwal() {
     rename(FILE_TEMP, FILE_JADWAL);
 
     if (found)
-        printf("\n[✓] Jadwal berhasil diperbarui!\n");
+        printf("\nJadwal berhasil diperbarui!\n");
     else
-        printf("\n[!] ID tidak ditemukan.\n");
+        printf("\nID tidak ditemukan.\n");
 
     pauseScreen();
 }
@@ -344,7 +358,7 @@ void hapusJadwal() {
     int found = 0;
 
     if (!f || !tmp) {
-        printf("\n[!] Gagal membuka file jadwal.\n");
+        printf("\nGagal membuka file jadwal.\n");
         pauseScreen();
         return;
     }
@@ -366,9 +380,9 @@ void hapusJadwal() {
     rename(FILE_TEMP, FILE_JADWAL);
 
     if (found)
-        printf("\n[✓] Jadwal berhasil dihapus!\n");
+        printf("\nJadwal berhasil dihapus!\n");
     else
-        printf("\n[!] ID tidak ditemukan.\n");
+        printf("\nID tidak ditemukan.\n");
 
     pauseScreen();
 }
