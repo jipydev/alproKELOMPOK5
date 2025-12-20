@@ -15,14 +15,18 @@ typedef struct {
     char keterangan[100];
 } Keuangan;
 
+
 /* =======================
-   TAMBAH DATA
+   CARI BY ID
    ======================= */
 void tambahKeuangan() {
     clearScreen();
-    printf("=== TAMBAH LAPORAN KEUANGAN ===\n");
 
-    int id = inputInt("Masukkan ID: ");
+    printf("========================================\n");
+    printf("       TAMBAH LAPORAN KEUANGAN            \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID : ");
 
     FILE *f = fopen(FILE_KEUANGAN, "r");
     Keuangan k;
@@ -32,7 +36,7 @@ void tambahKeuangan() {
         while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
                       &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
             if (k.id == id) {
-                printf("ID sudah ada!\n");
+                printf("\n[!] ID sudah terdaftar!\n");
                 fclose(f);
                 pauseScreen();
                 return;
@@ -43,78 +47,26 @@ void tambahKeuangan() {
 
     f = fopen(FILE_KEUANGAN, "a");
     if (!f) {
-        printf("Gagal membuka file.\n");
+        printf("\n[!] Gagal membuka file keuangan.\n");
         pauseScreen();
         return;
     }
 
     k.id = id;
-    inputString("Jenis (MASUK/KELUAR): ", k.jenis, sizeof(k.jenis));
-    k.nominal = inputInt("Nominal: ");
-    inputString("Tanggal (contoh: 12-09-2025): ", k.tanggal, sizeof(k.tanggal));
-    inputString("Keterangan: ", k.keterangan, sizeof(k.keterangan));
+
+    printf("\n=========== INPUT DATA ===========\n");
+    inputString("Jenis (MASUK/KELUAR) : ", k.jenis, sizeof(k.jenis));
+    k.nominal = inputInt("Nominal             : Rp ");
+    inputString("Tanggal (dd-mm-yyyy): ", k.tanggal, sizeof(k.tanggal));
+    inputString("Keterangan           : ", k.keterangan, sizeof(k.keterangan));
+    printf("==================================\n");
 
     fprintf(f, "%d|%s|%d|%s|%s\n",
             k.id, k.jenis, k.nominal, k.tanggal, k.keterangan);
 
     fclose(f);
-    printf("Data keuangan berhasil ditambahkan!\n");
-    pauseScreen();
-}
 
-/* =======================
-   TAMPILKAN SEMUA
-   ======================= */
-void tampilkanSemuaKeuangan() {
-    clearScreen();
-    FILE *f = fopen(FILE_KEUANGAN, "r");
-    if (!f) {
-        printf("Belum ada data.\n");
-        pauseScreen();
-        return;
-    }
-
-    Keuangan k;
-    printf("=== DATA LAPORAN KEUANGAN ===\n");
-    while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
-                  &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
-        printf("ID:%d | %s | Rp%d | %s\nKet: %s\n\n",
-               k.id, k.jenis, k.nominal, k.tanggal, k.keterangan);
-    }
-
-    fclose(f);
-    pauseScreen();
-}
-
-/* =======================
-   CARI BY ID
-   ======================= */
-void cariKeuanganById() {
-    clearScreen();
-    int id = inputInt("Masukkan ID: ");
-
-    FILE *f = fopen(FILE_KEUANGAN, "r");
-    if (!f) {
-        printf("Belum ada data.\n");
-        pauseScreen();
-        return;
-    }
-
-    Keuangan k;
-    int found = 0;
-
-    while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
-                  &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
-        if (k.id == id) {
-            printf("ID:%d\nJenis:%s\nNominal:%d\nTanggal:%s\nKet:%s\n",
-                   k.id, k.jenis, k.nominal, k.tanggal, k.keterangan);
-            found = 1;
-            break;
-        }
-    }
-
-    fclose(f);
-    if (!found) printf("ID tidak ditemukan.\n");
+    printf("\n[✓] Data keuangan berhasil ditambahkan!\n");
     pauseScreen();
 }
 
@@ -123,12 +75,18 @@ void cariKeuanganById() {
    ======================= */
 void cariKeuanganByJenis() {
     clearScreen();
+
+    printf("========================================\n");
+    printf("     CARI DATA KEUANGAN BERDASARKAN JENIS \n");
+    printf("========================================\n");
+
     char cari[20];
-    inputString("Masukkan jenis (MASUK/KELUAR): ", cari, sizeof(cari));
+    inputString("Masukkan jenis (MASUK/KELUAR) : ", cari, sizeof(cari));
 
     FILE *f = fopen(FILE_KEUANGAN, "r");
     if (!f) {
-        printf("Belum ada data.\n");
+        printf("\nBelum ada data keuangan.\n");
+        printf("========================================\n");
         pauseScreen();
         return;
     }
@@ -136,21 +94,34 @@ void cariKeuanganByJenis() {
     Keuangan k;
     int found = 0;
 
-    printf("\nHASIL PENCARIAN:\n");
+    printf("\n| %-4s | %-10s | %-10s | %-12s | %-20s |\n",
+           "ID", "Jenis", "Nominal", "Tanggal", "Keterangan");
+    printf("=============================================================================\n");
+
     while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
                   &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
+
         if (strcmp(k.jenis, cari) == 0) {
-            printf("ID:%d | Rp%d | %s | %s\n",
-                   k.id, k.nominal, k.tanggal, k.keterangan);
+            printf("| %-4d | %-10s | Rp%-8d | %-12s | %-20s |\n",
+                   k.id,
+                   k.jenis,
+                   k.nominal,
+                   k.tanggal,
+                   k.keterangan);
             found = 1;
         }
     }
 
     fclose(f);
-    if (!found) printf("Data tidak ditemukan.\n");
+
+    if (!found) {
+        printf("\n[!] Tidak ada data keuangan dengan jenis \"%s\".\n", cari);
+    } else {
+        printf("=============================================================================\n");
+    }
+
     pauseScreen();
 }
-
 /* =======================
    CARI BY TANGGAL
    ======================= */
@@ -183,7 +154,96 @@ void cariKeuanganByTanggal() {
     if (!found) printf("Data tidak ditemukan.\n");
     pauseScreen();
 }
+//By id
+void cariKeuanganById() {
+    clearScreen();
 
+    printf("========================================\n");
+    printf("      CARI DATA KEUANGAN BERDASARKAN ID  \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Keuangan : ");
+
+    FILE *f = fopen(FILE_KEUANGAN, "r");
+    if (!f) {
+        printf("\n[!] Belum ada data keuangan.\n");
+        pauseScreen();
+        return;
+    }
+
+    Keuangan k;
+    int found = 0;
+
+    while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
+                  &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
+
+        if (k.id == id) {
+            printf("\n========== DATA KEUANGAN DITEMUKAN ==========\n");
+            printf("ID        : %d\n", k.id);
+            printf("Jenis     : %s\n", k.jenis);
+            printf("Nominal   : Rp %d\n", k.nominal);
+            printf("Tanggal   : %s\n", k.tanggal);
+            printf("Keterangan: %s\n", k.keterangan);
+            printf("============================================\n");
+            found = 1;
+            break;
+        }
+    }
+
+    fclose(f);
+
+    if (!found) {
+        printf("\n[!] Data keuangan dengan ID %d tidak ditemukan.\n", id);
+    }
+
+    pauseScreen();
+}
+void tampilkanSemuaKeuangan() {
+    clearScreen();
+
+    FILE *f = fopen(FILE_KEUANGAN, "r");
+    if (!f) {
+        printf("========================================\n");
+        printf("        DATA LAPORAN KEUANGAN            \n");
+        printf("========================================\n");
+        printf("\nBelum ada data keuangan.\n");
+        printf("========================================\n");
+        pauseScreen();
+        return;
+    }
+
+    Keuangan k;
+    int totalMasuk = 0, totalKeluar = 0;
+
+    printf("========================================\n");
+    printf("        DATA LAPORAN KEUANGAN            \n");
+    printf("========================================\n");
+    printf("| %-4s | %-7s | %-12s | %-12s |\n",
+           "ID", "Jenis", "Nominal", "Tanggal");
+    printf("========================================\n");
+
+    while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
+                  &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
+
+        printf("| %-4d | %-7s | Rp%-9d | %-12s |\n",
+               k.id, k.jenis, k.nominal, k.tanggal);
+
+        if (strcmp(k.jenis, "MASUK") == 0)
+            totalMasuk += k.nominal;
+        else if (strcmp(k.jenis, "KELUAR") == 0)
+            totalKeluar += k.nominal;
+    }
+
+    fclose(f);
+
+    printf("========================================\n");
+    printf("Total MASUK  : Rp%d\n", totalMasuk);
+    printf("Total KELUAR : Rp%d\n", totalKeluar);
+    printf("Saldo        : Rp%d\n", totalMasuk - totalKeluar);
+    printf("========================================\n");
+
+    pauseScreen();
+}
 /* =======================
    SUBMENU LIHAT
    ======================= */

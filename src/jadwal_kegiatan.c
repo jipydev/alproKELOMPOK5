@@ -375,7 +375,7 @@ void editJadwal() {
     pauseScreen();
 }
 
-vvoid hapusJadwal() {
+void hapusJadwal() {
     clearScreen();
 
     printf("========================================\n");
