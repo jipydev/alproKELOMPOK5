@@ -45,10 +45,19 @@ void sortJadwalById(Jadwal data[], int n) {
    ===================================================== */
 void tambahJadwal() {
     clearScreen();
-    printf("=== TAMBAH JADWAL KEGIATAN ===\n");
 
-    int id = inputInt("Masukkan ID Jadwal (0 = batal): ");
-    if (id == 0) return;
+    printf("========================================\n");
+    printf("        TAMBAH JADWAL KEGIATAN            \n");
+    printf("========================================\n\n");
+
+    int id = inputInt("Masukkan ID Jadwal (0 = batal) : ");
+    if (id == 0) {
+        printf("\n========================================\n");
+        printf("Proses penambahan dibatalkan.\n");
+        printf("========================================\n");
+        pauseScreen();
+        return;
+    }
 
     Jadwal data[MAX_DATA];
     int n = loadJadwal(data, MAX_DATA);
@@ -56,24 +65,33 @@ void tambahJadwal() {
     /* Cegah ID duplikat */
     for (int i = 0; i < n; i++) {
         if (data[i].id == id) {
-            printf("ID sudah ada!\n");
+            printf("\n========================================\n");
+            printf("[!] ID Jadwal sudah terdaftar!\n");
+            printf("========================================\n");
             pauseScreen();
             return;
         }
     }
 
     FILE *f = fopen(FILE_JADWAL, "a");
-    if (!f) return;
+    if (!f) {
+        printf("\n[!] Gagal membuka file jadwal!\n");
+        pauseScreen();
+        return;
+    }
 
     Jadwal j;
     j.id = id;
-    inputString("Nama kegiatan: ", j.kegiatan, sizeof(j.kegiatan));
-    inputString("Tanggal (contoh: 12-09-2025): ", j.tanggal, sizeof(j.tanggal));
+
+    printf("\n=========== INPUT DATA JADWAL ===========\n");
+    inputString("Nama Kegiatan  : ", j.kegiatan, sizeof(j.kegiatan));
+    inputString("Tanggal (dd-mm-yyyy): ", j.tanggal, sizeof(j.tanggal));
+    printf("========================================\n");
 
     fprintf(f, "%d|%s|%s\n", j.id, j.kegiatan, j.tanggal);
     fclose(f);
 
-    printf("Jadwal berhasil ditambahkan!\n");
+    printf("\n[✓] Jadwal berhasil ditambahkan!\n");
     pauseScreen();
 }
 
@@ -86,8 +104,13 @@ void tampilkanSemuaJadwal() {
     Jadwal data[MAX_DATA];
     int n = loadJadwal(data, MAX_DATA);
 
+    printf("========================================\n");
+    printf("        DAFTAR JADWAL KEGIATAN            \n");
+    printf("========================================\n");
+
     if (n == 0) {
-        printf("Belum ada data jadwal.\n");
+        printf("\nBelum ada data jadwal.\n");
+        printf("========================================\n");
         pauseScreen();
         return;
     }
@@ -113,33 +136,55 @@ void tampilkanSemuaJadwal() {
    ===================================================== */
 void cariJadwalById() {
     clearScreen();
-    int id = inputInt("Masukkan ID (0 = kembali): ");
-    if (id == 0) return;
+
+    printf("========================================\n");
+    printf("        CARI JADWAL BERDASARKAN ID        \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID (0 = kembali) : ");
+    if (id == 0) {
+        printf("\nKembali ke menu...\n");
+        pauseScreen();
+        return;
+    }
 
     Jadwal data[MAX_DATA];
     int n = loadJadwal(data, MAX_DATA);
 
     for (int i = 0; i < n; i++) {
         if (data[i].id == id) {
-            printf("ID:%d\nKegiatan:%s\nTanggal:%s\n",
-                   data[i].id, data[i].kegiatan, data[i].tanggal);
+            printf("\n========== JADWAL DITEMUKAN ==========\n");
+            printf("ID       : %d\n", data[i].id);
+            printf("Kegiatan : %s\n", data[i].kegiatan);
+            printf("Tanggal  : %s\n", data[i].tanggal);
+            printf("=====================================\n");
             pauseScreen();
             return;
         }
     }
 
-    printf("Jadwal tidak ditemukan.\n");
+    printf("\nJadwal dengan ID %d tidak ditemukan.\n", id);
     pauseScreen();
 }
 
+
 void cariJadwalByNama() {
     clearScreen();
+
+    printf("========================================\n");
+    printf("     CARI JADWAL BERDASARKAN KEGIATAN     \n");
+    printf("========================================\n");
+
     char key[50];
-    inputString("Masukkan nama kegiatan: ", key, sizeof(key));
+    inputString("Masukkan nama kegiatan : ", key, sizeof(key));
 
     Jadwal data[MAX_DATA];
     int n = loadJadwal(data, MAX_DATA);
     int found = 0;
+
+    printf("\n| %-4s | %-25s | %-12s |\n",
+           "ID", "Nama Kegiatan", "Tanggal");
+    printf("========================================\n");
 
     for (int i = 0; i < n; i++) {
         if (strstr(data[i].kegiatan, key)) {
@@ -149,20 +194,32 @@ void cariJadwalByNama() {
         }
     }
 
-    if (!found) printf("Tidak ada jadwal ditemukan.\n");
+    if (!found) {
+        printf("\n Tidak ada jadwal dengan nama \"%s\".\n", key);
+    } else {
+        printf("========================================\n");
+    }
+
     pauseScreen();
 }
-
 void cariJadwalByTanggal() {
     clearScreen();
-    char key[30];
-    inputString("Masukkan tanggal: ", key, sizeof(key));
+
+    printf("========================================\n");
+    printf("      CARI JADWAL BERDASARKAN TANGGAL     \n");
+    printf("========================================    \n");
+
+    char key[20];
+    inputString("Masukkan tanggal (dd-mm-yyyy): ", key, sizeof(key));
 
     Jadwal data[MAX_DATA];
     int n = loadJadwal(data, MAX_DATA);
     int found = 0;
 
-    printf("\n=== JADWAL TANGGAL %s ===\n", key);
+    printf("\n| %-4s | %-25s | %-12s |\n",
+           "ID", "Nama Kegiatan", "Tanggal");
+    printf("==============================================\n");
+
     for (int i = 0; i < n; i++) {
         if (strcmp(data[i].tanggal, key) == 0) {
             printf("ID:%d | Kegiatan:%s\n",
@@ -171,9 +228,16 @@ void cariJadwalByTanggal() {
         }
     }
 
-    if (!found) printf("Tidak ada jadwal.\n");
+    if (!found) {
+        printf("\n[!] Tidak ada jadwal pada tanggal %s.\n", key);
+    } else {
+        printf("==============================================\n");
+    }
+
     pauseScreen();
 }
+
+
 
 /* =====================================================
    SUBMENU LIHAT
@@ -204,60 +268,111 @@ void lihatJadwal() {
    ===================================================== */
 void editJadwal() {
     clearScreen();
-    int id = inputInt("Masukkan ID (0 = batal): ");
-    if (id == 0) return;
+
+    printf("========================================\n");
+    printf("           EDIT JADWAL KEGIATAN           \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Jadwal (0 = batal) : ");
+    if (id == 0) {
+        printf("\nProses edit dibatalkan.\n");
+        pauseScreen();
+        return;
+    }
 
     FILE *f = fopen(FILE_JADWAL, "r");
     FILE *tmp = fopen(FILE_TEMP, "w");
     Jadwal j;
     int found = 0;
 
-    while (f && fscanf(f, "%d|%49[^|]|%29[^\n]\n",
-                       &j.id, j.kegiatan, j.tanggal) != EOF) {
+    if (!f || !tmp) {
+        printf("\n[!] Gagal membuka file jadwal.\n");
+        pauseScreen();
+        return;
+    }
+
+    while (fscanf(f, "%d|%49[^|]|%29[^\n]\n",
+                  &j.id, j.kegiatan, j.tanggal) != EOF) {
+
         if (j.id == id) {
             found = 1;
-            inputString("Nama kegiatan baru: ", j.kegiatan, sizeof(j.kegiatan));
-            inputString("Tanggal baru: ", j.tanggal, sizeof(j.tanggal));
+
+            printf("\nData Lama\n");
+            printf("----------------------------------------\n");
+            printf("Nama Kegiatan : %s\n", j.kegiatan);
+            printf("Tanggal       : %s\n", j.tanggal);
+            printf("----------------------------------------\n");
+
+            printf("\nMasukkan Data Baru\n");
+            inputString("Nama Kegiatan : ", j.kegiatan, sizeof(j.kegiatan));
+            inputString("Tanggal (dd-mm-yyyy): ", j.tanggal, sizeof(j.tanggal));
         }
+
         fprintf(tmp, "%d|%s|%s\n", j.id, j.kegiatan, j.tanggal);
     }
 
-    if (f) fclose(f);
+    fclose(f);
     fclose(tmp);
     remove(FILE_JADWAL);
     rename(FILE_TEMP, FILE_JADWAL);
 
-    printf(found ? "Jadwal diperbarui!\n" : "ID tidak ditemukan!\n");
+    if (found)
+        printf("\n[✓] Jadwal berhasil diperbarui!\n");
+    else
+        printf("\n[!] ID tidak ditemukan.\n");
+
     pauseScreen();
 }
 
 void hapusJadwal() {
     clearScreen();
-    int id = inputInt("Masukkan ID (0 = batal): ");
-    if (id == 0) return;
+
+    printf("========================================\n");
+    printf("          HAPUS JADWAL KEGIATAN           \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Jadwal (0 = batal) : ");
+    if (id == 0) {
+        printf("\nProses penghapusan dibatalkan.\n");
+        pauseScreen();
+        return;
+    }
 
     FILE *f = fopen(FILE_JADWAL, "r");
     FILE *tmp = fopen(FILE_TEMP, "w");
     Jadwal j;
     int found = 0;
 
-    while (f && fscanf(f, "%d|%49[^|]|%29[^\n]\n",
-                       &j.id, j.kegiatan, j.tanggal) != EOF) {
+    if (!f || !tmp) {
+        printf("\n[!] Gagal membuka file jadwal.\n");
+        pauseScreen();
+        return;
+    }
+
+    while (fscanf(f, "%d|%49[^|]|%29[^\n]\n",
+                  &j.id, j.kegiatan, j.tanggal) != EOF) {
+
         if (j.id == id) {
             found = 1;
             continue;
         }
+
         fprintf(tmp, "%d|%s|%s\n", j.id, j.kegiatan, j.tanggal);
     }
 
-    if (f) fclose(f);
+    fclose(f);
     fclose(tmp);
     remove(FILE_JADWAL);
     rename(FILE_TEMP, FILE_JADWAL);
 
-    printf(found ? "Jadwal dihapus!\n" : "ID tidak ditemukan!\n");
+    if (found)
+        printf("\n[✓] Jadwal berhasil dihapus!\n");
+    else
+        printf("\n[!] ID tidak ditemukan.\n");
+
     pauseScreen();
 }
+
 
 /* =====================================================
    MENU UTAMA
@@ -266,12 +381,19 @@ void menuJadwal() {
     int p;
     do {
         clearScreen();
-        printf("=== CRUD JADWAL KEGIATAN ===\n");
-        printf("1. Tambah\n");
-        printf("2. Lihat\n");
-        printf("3. Edit\n");
-        printf("4. Hapus\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|         Jadwal          |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Jadwal          |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Jadwal           |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Jadwal            |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Jadwal           |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 

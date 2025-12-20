@@ -89,33 +89,55 @@ void tambahStunting() {
     clearScreen();
     loadStunting();
 
-    int id = inputInt("Masukkan ID (0=batal): ");
-    if (id == 0) return;
+    printf("========================================\n");
+    printf("        TAMBAH DATA STUNTING             \n");
+    printf("========================================\n\n");
+
+    int id = inputInt("Masukkan ID (0 = batal) : ");
+    if (id == 0) {
+        printf("\n========================================\n");
+        printf("Proses dibatalkan.\n");
+        printf("========================================\n");
+        pauseScreen();
+        return;
+    }
 
     if (cariIndexStunting(id) != -1) {
+        printf("\n========================================\n");
         printf("ID sudah terdaftar!\n");
+        printf("========================================\n");
         pauseScreen();
         return;
     }
 
     Stunting s;
     s.id = id;
-    inputString("Nama Anak  : ", s.nama, sizeof(s.nama));
-    s.umur = inputInt("Umur (bulan, max 59): ");
+
+    printf("\n============== INPUT DATA ===============\n");
+
+    inputString("Nama Anak            : ", s.nama, sizeof(s.nama));
+    s.umur = inputInt("Umur (bulan, max 59) : ");
 
     if (s.umur < 0 || s.umur > 59) {
-        printf("Umur balita harus 0–59 bulan!\n");
+        printf("\n========================================\n");
+        printf("Umur balita harus 0 - 59 bulan!\n");
+        printf("========================================\n");
         pauseScreen();
         return;
     }
 
-    s.tinggi = inputFloat("Tinggi Badan (cm): ");
+    s.tinggi = inputFloat("Tinggi Badan (cm)    : ");
+
+    printf("========================================\n");
+
     tentukanStatus(&s);
 
     dataStunting[jumlahStunting++] = s;
     saveStunting();
 
+    printf("\n========================================\n");
     printf("Data stunting berhasil ditambahkan!\n");
+    printf("========================================\n");
     pauseScreen();
 }
 
@@ -125,33 +147,34 @@ void tampilkanSemuaStunting() {
     loadStunting();
     sortStuntingByNama();
 
-    printf("=== DATA CEK STUNTING BALITA ===\n");
-    for (int i = 0; i < jumlahStunting; i++) {
-        printf("ID:%d | Nama:%s | Umur:%d bln | TB:%.1f cm | Status:%s\n",
-            dataStunting[i].id,
-            dataStunting[i].nama,
-            dataStunting[i].umur,
-            dataStunting[i].tinggi,
-            dataStunting[i].status);
+    printf("======================================================================\n");
+    printf("        DATA CEK STUNTING BALITA         \n");
+    printf("======================================================================\n\n");
+
+    if (jumlahStunting == 0) {
+        printf("Belum ada data stunting.\n");
+        printf("=================================================================\n");
+        pauseScreen();
+        return;
     }
-    pauseScreen();
-}
 
-void cariStuntingById() {
-    clearScreen();
-    loadStunting();
+    printf("======================================================================\n");
+    printf("| %-4s | %-20s | %-10s | %-10s | %-10s |\n",
+           "ID", "Nama Anak", "Umur", "Tinggi", "Status");
+    printf("======================================================================\n");
 
-    int id = inputInt("Masukkan ID: ");
-    int idx = cariIndexStunting(id);
+    for (int i = 0; i < jumlahStunting; i++) {
+        printf("| %-4d | %-20s | %-7d bln | %-7.1f cm | %-10s |\n",
+               dataStunting[i].id,
+               dataStunting[i].nama,
+               dataStunting[i].umur,
+               dataStunting[i].tinggi,
+               dataStunting[i].status);
+    }
 
-    if (idx == -1)
-        printf("Data tidak ditemukan.\n");
-    else
-        printf("Nama:%s\nUmur:%d bln\nTB:%.1f cm\nStatus:%s\n",
-            dataStunting[idx].nama,
-            dataStunting[idx].umur,
-            dataStunting[idx].tinggi,
-            dataStunting[idx].status);
+    printf("======================================================================\n");
+    printf("Total Data : %d Balita\n", jumlahStunting);
+    printf("======================================================================\n");
 
     pauseScreen();
 }
@@ -164,25 +187,60 @@ void cariStuntingByNama() {
     inputString("Masukkan nama: ", key, sizeof(key));
 
     if (strlen(key) == 0) {
-        printf("Nama tidak boleh kosong!\n");
+        printf("\n[!] Nama tidak boleh kosong!\n");
         pauseScreen();
         return;
     }
 
     int found = 0;
+
+    printf("\n===============================================================\n");
+    printf("| %-4s | %-20s | %-8s | %-15s |\n",
+           "ID", "Nama", "TB(cm)", "Status");
+    printf("===============================================================\n");
+
     for (int i = 0; i < jumlahStunting; i++) {
         if (strstr(dataStunting[i].nama, key)) {
-            printf("ID:%d | Nama:%s | TB:%.1f | Status:%s\n",
-                dataStunting[i].id,
-                dataStunting[i].nama,
-                dataStunting[i].tinggi,
-                dataStunting[i].status);
+            printf("| %-4d | %-20s | %-8.1f | %-15s |\n",
+                   dataStunting[i].id,
+                   dataStunting[i].nama,
+                   dataStunting[i].tinggi,
+                   dataStunting[i].status);
             found = 1;
         }
     }
 
-    if (!found)
-        printf("Data tidak ditemukan.\n");
+    printf("===============================================================\n");
+
+    if (!found) {
+        printf("\n[!] Data dengan nama \"%s\" tidak ditemukan.\n", key);
+    }
+
+    pauseScreen();
+}
+void cariStuntingById() {
+    clearScreen();
+    loadStunting();
+
+    printf("========================================\n");
+    printf("        CARI STUNTING BERDASARKAN ID     \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID : ");
+    int idx = cariIndexStunting(id);
+
+    if (idx == -1) {
+        printf("\n[!] Data tidak ditemukan!\n");
+    } else {
+        printf("\nData ditemukan:\n");
+        printf("----------------------------------------\n");
+        printf("ID     : %d\n", dataStunting[idx].id);
+        printf("Nama   : %s\n", dataStunting[idx].nama);
+        printf("Umur   : %d bulan\n", dataStunting[idx].umur);
+        printf("Tinggi : %.1f cm\n", dataStunting[idx].tinggi);
+        printf("Status : %s\n", dataStunting[idx].status);
+        printf("----------------------------------------\n");
+    }
 
     pauseScreen();
 }
@@ -193,22 +251,36 @@ void editStunting() {
     clearScreen();
     loadStunting();
 
-    int id = inputInt("Masukkan ID: ");
+    printf("============================================\n");
+    printf("            EDIT DATA STUNTING               \n");
+    printf("============================================\n");
+
+    int id = inputInt("Masukkan ID yang akan diedit : ");
     int idx = cariIndexStunting(id);
 
     if (idx == -1) {
-        printf("ID tidak ditemukan!\n");
+        printf("\n[!] ID tidak ditemukan!\n");
         pauseScreen();
         return;
     }
 
-    inputString("Nama baru  : ", dataStunting[idx].nama, sizeof(dataStunting[idx].nama));
-    dataStunting[idx].umur = inputInt("Umur baru (bulan): ");
-    dataStunting[idx].tinggi = inputFloat("Tinggi baru (cm): ");
+    printf("\n==============Data Lama===================\n");
+    printf("--------------------------------------------\n");
+    printf("Nama   : %s\n", dataStunting[idx].nama);
+    printf("Umur   : %d bulan\n", dataStunting[idx].umur);
+    printf("Tinggi : %.1f cm\n", dataStunting[idx].tinggi);
+    printf("Status : %s\n", dataStunting[idx].status);
+    printf("--------------------------------------------\n");
+
+    printf("\nMasukkan Data Baru\n");
+    inputString("Nama   : ", dataStunting[idx].nama, sizeof(dataStunting[idx].nama));
+    dataStunting[idx].umur   = inputInt("Umur   (bulan): ");
+    dataStunting[idx].tinggi = inputFloat("Tinggi (cm)  : ");
     tentukanStatus(&dataStunting[idx]);
 
     saveStunting();
-    printf("Data berhasil diupdate!\n");
+
+    printf("\n[✓] Data berhasil diperbarui!\n");
     pauseScreen();
 }
 
@@ -216,14 +288,27 @@ void hapusStunting() {
     clearScreen();
     loadStunting();
 
-    int id = inputInt("Masukkan ID: ");
+    printf("========================================\n");
+    printf("          HAPUS DATA STUNTING            \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID yang akan dihapus : ");
     int idx = cariIndexStunting(id);
 
     if (idx == -1) {
-        printf("ID tidak ditemukan!\n");
+        printf("\n[!] ID tidak ditemukan!\n");
         pauseScreen();
         return;
     }
+
+    printf("\n=========Data yang dihapus:===========\n");
+    printf("----------------------------------------\n");
+    printf("ID     : %d\n", dataStunting[idx].id);
+    printf("Nama   : %s\n", dataStunting[idx].nama);
+    printf("Umur   : %d bulan\n", dataStunting[idx].umur);
+    printf("Tinggi : %.1f cm\n", dataStunting[idx].tinggi);
+    printf("Status : %s\n", dataStunting[idx].status);
+    printf("----------------------------------------\n");
 
     for (int i = idx; i < jumlahStunting - 1; i++)
         dataStunting[i] = dataStunting[i + 1];
@@ -231,7 +316,7 @@ void hapusStunting() {
     jumlahStunting--;
     saveStunting();
 
-    printf("Data berhasil dihapus!\n");
+    printf("\nData di atas berhasil dihapus!\n");
     pauseScreen();
 }
 
@@ -240,11 +325,17 @@ void lihatStunting() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT DATA STUNTING ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari Berdasarkan ID\n");
-        printf("3. Cari Berdasarkan Nama\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Data Stunting     |\n");
+printf("|=========================|\n");
+printf("|1.Lihat Semua            |\n");
+printf("|-------------------------|\n");
+printf("|2.Cari Stunting By Id    |\n");
+printf("|-------------------------|\n");
+printf("|3.Cari Stunting By Nama  |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
@@ -261,12 +352,19 @@ void menuStunting() {
     int p;
     do {
         clearScreen();
-        printf("=== MENU CEK STUNTING BALITA ===\n");
-        printf("1. Tambah Data\n");
-        printf("2. Lihat Data\n");
-        printf("3. Edit Data\n");
-        printf("4. Hapus Data\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Stunting          |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Data Stunting   |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Data Stunting    |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Data Stunting     |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Data Stunting    |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");;
 
         p = inputInt("Pilih: ");
 

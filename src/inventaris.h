@@ -5,5 +5,6 @@ void menuInventaris();
 void tambahInv();
 void tampilkanSemuaInv();
 void editInv();
+void hapusInv();
 
 #endif

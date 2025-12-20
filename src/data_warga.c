@@ -46,9 +46,11 @@ void saveDataWarga() {
 /* ===== TAMBAH ===== */
 void tambahWarga() {
     clearScreen();
-    printf("=== TAMBAH DATA WARGA ===\n");
-
-    int id = inputInt("Masukkan ID (0 = batal): ");
+printf("===========================================\n");
+printf("|            Tambah Warga                  |\n");
+printf("===========================================\n");
+int id = inputInt("Masukan Id (0 untuk kembali) : ");
+printf("===========================================\n");
     if (id == 0) return;
 
     for (int i = 0; i < jumlahWarga; i++) {
@@ -96,14 +98,20 @@ void tampilkanSemuaWarga() {
         }
     }
 
-    printf("=== DATA WARGA ===\n");
-    for (int i = 0; i < jumlahWarga; i++) {
-        printf("ID:%d | Nama:%s | Alamat:%s | Umur:%d\n",
-               warga[i].id,
-               warga[i].nama,
-               warga[i].alamat,
-               warga[i].umur);
-    }
+printf("==================================================================\n");
+printf("| %-4s | %-20s | %-25s | %-4s |\n",
+       "ID", "Nama", "Alamat", "Umur");
+printf("==================================================================\n");
+
+for (int i = 0; i < jumlahWarga; i++) {
+    printf("| %-4d | %-20s | %-25s | %-4d |\n",
+           warga[i].id,
+           warga[i].nama,
+           warga[i].alamat,
+           warga[i].umur);
+}
+
+printf("==================================================================\n");
     pauseScreen();
 }
 
@@ -111,32 +119,49 @@ void tampilkanSemuaWarga() {
 void cariWargaById() {
     clearScreen();
     int id = inputInt("Masukkan ID: ");
-//Sequential Search
+
     for (int i = 0; i < jumlahWarga; i++) {
         if (warga[i].id == id) {
-            printf("ID:%d\nNama:%s\nAlamat:%s\nUmur:%d\n",
-                   warga[i].id,
-                   warga[i].nama,
-                   warga[i].alamat,
-                   warga[i].umur);
+
+            printf("=====================================\n");
+            printf("|        DATA WARGA DITEMUKAN        |\n");
+            printf("=====================================\n");
+            printf("| ID     : %-25d |\n", warga[i].id);
+            printf("| Nama   : %-25s |\n", warga[i].nama);
+            printf("| Alamat : %-25s |\n", warga[i].alamat);
+            printf("| Umur   : %-25d |\n", warga[i].umur);
+            printf("=====================================\n");
+
             pauseScreen();
             return;
         }
     }
-    printf("Data tidak ditemukan.\n");
+
+    printf("=====================================\n");
+    printf("|       DATA TIDAK DITEMUKAN         |\n");
+    printf("=====================================\n");
     pauseScreen();
 }
 
 void cariWargaByNama() {
     clearScreen();
+
     char key[50];
-    inputString("Nama: ", key, sizeof(key));
+    inputString("Masukkan Nama: ", key, sizeof(key));
     key[strcspn(key, "\n")] = 0;
 
     int found = 0;
+
+    printf("===============================================================\n");
+    printf("|                    HASIL PENCARIAN WARGA                     |\n");
+    printf("===============================================================\n");
+    printf("| %-4s | %-20s | %-25s | %-4s |\n",
+           "ID", "Nama", "Alamat", "Umur");
+    printf("===============================================================\n");
+
     for (int i = 0; i < jumlahWarga; i++) {
         if (strstr(warga[i].nama, key)) {
-            printf("ID:%d | Nama:%s | Alamat:%s | Umur:%d\n",
+            printf("| %-4d | %-20s | %-25s | %-4d |\n",
                    warga[i].id,
                    warga[i].nama,
                    warga[i].alamat,
@@ -144,52 +169,98 @@ void cariWargaByNama() {
             found = 1;
         }
     }
-    if (!found) printf("Tidak ditemukan.\n");
+
+    printf("===============================================================\n");
+
+    if (!found) {
+        printf("|               DATA TIDAK DITEMUKAN                             |\n");
+        printf("=================================================================\n");
+    }
+
     pauseScreen();
 }
 
 /* ===== EDIT ===== */
 void editWarga() {
     clearScreen();
-    int id = inputInt("Masukkan ID: ");
+    int id = inputInt("Masukkan ID Warga: ");
 
     for (int i = 0; i < jumlahWarga; i++) {
         if (warga[i].id == id) {
+
+         printf("=====================================\n");
+         printf("|        DATA WARGA DITEMUKAN        |\n");
+         printf("=====================================\n");
+         printf("| ID     : %-25d |\n", warga[i].id);
+         printf("| Nama   : %-25s |\n", warga[i].nama);
+         printf("| Alamat : %-25s |\n", warga[i].alamat);
+         printf("| Umur   : %-25d |\n", warga[i].umur);
+         printf("=====================================\n\n");
+
+         printf("========= MASUKKAN DATA BARU =========\n");
             inputString("Nama baru   : ", warga[i].nama, sizeof(warga[i].nama));
             inputString("Alamat baru : ", warga[i].alamat, sizeof(warga[i].alamat));
             warga[i].umur = inputInt("Umur baru   : ");
 
-            warga[i].nama[strcspn(warga[i].nama, "\n")] = 0;
-            warga[i].alamat[strcspn(warga[i].alamat, "\n")] = 0;
+ warga[i].nama[strcspn(warga[i].nama, "\n")] = 0;
+warga[i].alamat[strcspn(warga[i].alamat, "\n")] = 0;
 
-            saveDataWarga();
-            printf("Data diperbarui!\n");
+ saveDataWarga();
+
+            printf("\n=====================================\n");
+            printf("|        DATA BERHASIL DIPERBARUI    |\n");
+            printf("=====================================\n");
+
             pauseScreen();
             return;
         }
     }
-    printf("ID tidak ditemukan.\n");
+
+    printf("=====================================\n");
+    printf("|        ID TIDAK DITEMUKAN          |\n");
+    printf("=====================================\n");
     pauseScreen();
 }
 
 /* ===== HAPUS ===== */
 void hapusWarga() {
     clearScreen();
-    int id = inputInt("Masukkan ID: ");
+    int id = inputInt("Masukkan ID Warga: ");
 
     for (int i = 0; i < jumlahWarga; i++) {
         if (warga[i].id == id) {
-            for (int j = i; j < jumlahWarga - 1; j++) {
-                warga[j] = warga[j + 1];
+
+            printf("=====================================\n");
+            printf("|        DATA WARGA DITEMUKAN        |\n");
+            printf("=====================================\n");
+            printf("| ID     : %-25d |\n", warga[i].id);
+            printf("| Nama   : %-25s |\n", warga[i].nama);
+            printf("| Alamat : %-25s |\n", warga[i].alamat);
+            printf("| Umur   : %-25d |\n", warga[i].umur);
+            printf("=====================================\n");
+
+           
+                for (int j = i; j < jumlahWarga - 1; j++) {
+                    warga[j] = warga[j + 1];
+                
+                jumlahWarga--;
+                saveDataWarga();
+
+                printf("\n=====================================\n");
+                printf("|        DATA BERHASIL DIHAPUS       |\n");
+                printf("=====================================\n");
             }
-            jumlahWarga--;
-            saveDataWarga();
-            printf("Data dihapus!\n");
+
             pauseScreen();
             return;
         }
     }
-    printf("ID tidak ditemukan.\n");
+    
+
+
+    printf("=====================================\n");
+    printf("|        ID TIDAK DITEMUKAN          |\n");
+    printf("=====================================\n");
     pauseScreen();
 }
 
@@ -198,10 +269,17 @@ void lihatWarga() {
     int p;
     do {
         clearScreen();
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari ID\n");
-        printf("3. Cari Nama\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Data Warga        |\n");
+printf("|=========================|\n");
+printf("|1.Lihat Semua            |\n");
+printf("|-------------------------|\n");
+printf("|2.Cari By Id             |\n");
+printf("|-------------------------|\n");
+printf("|3.Cari By Nama           |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
         p = inputInt("Pilih: ");
 
         if (p == 1) tampilkanSemuaWarga();
@@ -216,12 +294,19 @@ void menuWarga() {
     int p;
     do {
         clearScreen();
-        printf("=== DATA WARGA ===\n");
-        printf("1. Tambah\n");
-        printf("2. Lihat\n");
-        printf("3. Edit\n");
-        printf("4. Hapus\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Menu Warga        |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Warga           |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Data Warga       |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Data Warga        |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Data Warga       |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
