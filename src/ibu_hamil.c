@@ -14,61 +14,104 @@
 typedef struct {
     int id;
     char nama[50];
+    int umur;              // tahun
     int usiaKehamilan;     // minggu
-    float beratBadan;     // kg
-    float tinggiBadan;    // cm
-    float hb;             // g/dL
+    float beratBadan;      // kg
+    float tinggiBadan;     // cm
+    float hb;              // g/dL
+    int sistol;            // mmHg
+    int diastol;           // mmHg
     float bmi;
     char statusBMI[30];
     char statusHB[30];
-    char resiko[40];
+    char resiko[40];       // ringkas
+    char detailResiko[200]; // detail risiko
 } IbuHamil;
 
-/* =======================
-   BMI WHO
-   ======================= */
 float hitungBMI(float bb, float tb_cm) {
     float tb_m = tb_cm / 100.0f;
+    if (tb_m <= 0.0f) return 0.0f;
     return bb / (tb_m * tb_m);
 }
 
 void tentukanStatusBMI(float bmi, char *out) {
-    if (bmi < 18.5) strcpy(out, "Underweight");
-    else if (bmi < 25) strcpy(out, "Normal");
-    else if (bmi < 30) strcpy(out, "Overweight");
+    if (bmi < 18.5f) strcpy(out, "Underweight");
+    else if (bmi < 25.0f) strcpy(out, "Normal");
+    else if (bmi < 30.0f) strcpy(out, "Overweight");
     else strcpy(out, "Obese");
 }
 
-/* =======================
-   HB WHO
-   ======================= */
 void tentukanStatusHB(float hb, char *out) {
-    if (hb < 11.0) strcpy(out, "Anemia");
-    else if (hb > 15.0) strcpy(out, "HB Tinggi");
+    if (hb < 11.0f) strcpy(out, "Anemia");
+    else if (hb > 15.0f) strcpy(out, "HB Tinggi");
     else strcpy(out, "Normal");
 }
 
 /* =======================
-   RESIKO KESELURUHAN
+   RESIKO ALL
    ======================= */
 void tentukanResiko(IbuHamil *i) {
     int skor = 0;
+    int adaRisiko = 0;
+    char hasil[200] = "";
 
+    /* BMI */
     if (strcmp(i->statusBMI, "Underweight") == 0 ||
-        strcmp(i->statusBMI, "Obese") == 0)
+        strcmp(i->statusBMI, "Obese") == 0) {
         skor++;
+        strcat(hasil, "RISIKO BMI; ");
+        adaRisiko = 1;
+    }
 
-    if (strcmp(i->statusHB, "Anemia") == 0 ||
-        strcmp(i->statusHB, "Polisitemia") == 0)
+    /* HB */
+    if (strcmp(i->statusHB, "Anemia") == 0) {
         skor++;
+        strcat(hasil, "ANEMIA; ");
+        adaRisiko = 1;
+    }
 
-    if (i->usiaKehamilan < 12)
+    /* Usia Kehamilan */
+    if (i->usiaKehamilan < 12) {
         skor++;
+        strcat(hasil, "KEHAMILAN TRIMESTER AWAL; ");
+        adaRisiko = 1;
+    }
 
-    if (skor >= 2) strcpy(i->resiko, "RESIKO TINGGI");
-    else if (skor == 1) strcpy(i->resiko, "RESIKO SEDANG");
+    /*  UMUR  */
+    if (i->umur < 20) {
+        strcat(hasil, "RISIKO KEHAMILAN USIA MUDA; ");
+        adaRisiko = 1;
+    } else if (i->umur >= 35) {
+        strcat(hasil, "RISIKO KEHAMILAN USIA LANJUT; ");
+        adaRisiko = 1;
+    }
+
+    /*  TEKANAN DARAH BERBASIS UMUR  */
+    if (i->umur < 20) {
+        if (i->sistol < 90 || i->diastol < 60)
+            strcat(hasil, "HIPOTENSI; "), adaRisiko = 1;
+        else if (i->sistol >= 130 || i->diastol >= 85)
+            strcat(hasil, "HIPERTENSI; "), adaRisiko = 1;
+    } else if (i->umur <= 34) {
+        if (i->sistol < 95 || i->diastol < 65)
+            strcat(hasil, "HIPOTENSI; "), adaRisiko = 1;
+        else if (i->sistol >= 140 || i->diastol >= 90)
+            strcat(hasil, "HIPERTENSI; "), adaRisiko = 1;
+    } else {
+        if (i->sistol < 100 || i->diastol < 70)
+            strcat(hasil, "HIPOTENSI; "), adaRisiko = 1;
+        else if (i->sistol >= 150 || i->diastol >= 95)
+            strcat(hasil, "HIPERTENSI; "), adaRisiko = 1;
+    }
+
+    if (skor >= 3) strcpy(i->resiko, "RESIKO TINGGI");
+    else if (skor >= 1) strcpy(i->resiko, "RESIKO SEDANG");
     else strcpy(i->resiko, "NORMAL");
+
+    if (!adaRisiko) strcpy(hasil, "TIDAK ADA RISIKO KHUSUS");
+    strcpy(i->detailResiko, hasil);
 }
+
 
 /* =======================
    TAMBAH DATA
@@ -85,11 +128,11 @@ void tambahIbuHamil() {
 
     if (f) {
         while (fscanf(f,
-            "%d|%49[^|]|%d|%f|%f|%f|%f|%29[^|]|%29[^|]|%39[^\n]\n",
-            &i.id, i.nama, &i.usiaKehamilan,
+            "%d|%49[^|]|%d|%d|%f|%f|%f|%d|%d|%f|%29[^|]|%29[^|]|%39[^|]|%199[^\n]",
+            &i.id, i.nama, &i.umur, &i.usiaKehamilan,
             &i.beratBadan, &i.tinggiBadan,
-            &i.hb, &i.bmi,
-            i.statusBMI, i.statusHB, i.resiko) == 10) {
+            &i.hb, &i.sistol, &i.diastol, &i.bmi,
+            i.statusBMI, i.statusHB, i.resiko, i.detailResiko) == 14) {
             if (i.id == id) {
                 printf("ID sudah terdaftar!\n");
                 fclose(f);
@@ -109,6 +152,10 @@ void tambahIbuHamil() {
     i.beratBadan = inputFloat("Berat Badan (kg)  : ");
     i.tinggiBadan = inputFloat("Tinggi Badan (cm): ");
     i.hb = inputFloat("HB (g/dL)         : ");
+    i.umur = inputInt("Umur Ibu (thn)     : ");
+    i.sistol = inputInt("Tekanan Sistol    : ");
+    i.diastol = inputInt("Tekanan Diastol   : ");
+
 
     i.bmi = hitungBMI(i.beratBadan, i.tinggiBadan);
     tentukanStatusBMI(i.bmi, i.statusBMI);
@@ -116,10 +163,11 @@ void tambahIbuHamil() {
     tentukanResiko(&i);
 
     fprintf(f,
-        "%d|%s|%d|%.2f|%.2f|%.2f|%.2f|%s|%s|%s\n",
-        i.id, i.nama, i.usiaKehamilan,
+        "%d|%s|%d|%d|%.2f|%.2f|%.2f|%d|%d|%.2f|%s|%s|%s|%s\n",
+        i.id, i.nama, i.umur, i.usiaKehamilan,
         i.beratBadan, i.tinggiBadan, i.hb,
-        i.bmi, i.statusBMI, i.statusHB, i.resiko);
+        i.sistol, i.diastol, i.bmi,
+        i.statusBMI, i.statusHB, i.resiko, i.detailResiko);
 
     fclose(f);
     printf("Data ibu hamil berhasil ditambahkan!\n");
@@ -141,16 +189,17 @@ void tampilkanSemuaIbuHamil() {
         return;
     }
 
-    while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%f|%f|%f|%29[^|]|%29[^|]|%39[^\n]\n",
-        &data[n].id, data[n].nama,
-        &data[n].usiaKehamilan,
-        &data[n].beratBadan, &data[n].tinggiBadan,
-        &data[n].hb, &data[n].bmi,
-        data[n].statusBMI, data[n].statusHB,
-        data[n].resiko) == 10) {
-        n++;
-    }
+while (fscanf(f,
+ "%d|%49[^|]|%d|%d|%f|%f|%f|%d|%d|%f|%29[^|]|%29[^|]|%39[^|]|%199[^\n]",
+ &data[n].id, data[n].nama, &data[n].umur, &data[n].usiaKehamilan,
+ &data[n].beratBadan, &data[n].tinggiBadan,
+ &data[n].hb, &data[n].sistol, &data[n].diastol, &data[n].bmi,
+ data[n].statusBMI, data[n].statusHB,
+ data[n].resiko, data[n].detailResiko
+) == 14) {
+    n++;
+}
+
     fclose(f);
 
     for (int i = 0; i < n - 1; i++)
@@ -163,11 +212,24 @@ void tampilkanSemuaIbuHamil() {
 
     printf("=== DATA IBU HAMIL ===\n");
     for (int i = 0; i < n; i++) {
-        printf("ID:%d | %s | %d mg | BMI %.2f (%s) | HB %.2f (%s) | %s\n",
-            data[i].id, data[i].nama, data[i].usiaKehamilan,
-            data[i].bmi, data[i].statusBMI,
-            data[i].hb, data[i].statusHB,
-            data[i].resiko);
+        printf(
+                "ID:%d | %s | Umur:%d th | %d mg | TD %d/%d | BMI %.2f (%s) | HB %.2f (%s)\n"
+                "Resiko: %s\n"
+                "Detail: %s\n\n",
+                data[i].id,
+                data[i].nama,
+                data[i].umur,
+                data[i].usiaKehamilan,
+                data[i].sistol,
+                data[i].diastol,
+                data[i].bmi,
+                data[i].statusBMI,
+                data[i].hb,
+                data[i].statusHB,
+                data[i].resiko,
+                data[i].detailResiko
+                );
+
     }
 
     pauseScreen();
@@ -191,12 +253,14 @@ void cariIbuHamilById() {
         return;
     }
 
-    while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%f|%f|%f|%29[^|]|%29[^|]|%39[^\n]\n",
-        &i.id, i.nama, &i.usiaKehamilan,
-        &i.beratBadan, &i.tinggiBadan,
-        &i.hb, &i.bmi,
-        i.statusBMI, i.statusHB, i.resiko) == 10) {
+   while (fscanf(f,
+ "%d|%49[^|]|%d|%d|%f|%f|%f|%d|%d|%f|%29[^|]|%29[^|]|%39[^|]|%199[^\n]",
+ &i.id, i.nama, &i.umur, &i.usiaKehamilan,
+ &i.beratBadan, &i.tinggiBadan,
+ &i.hb, &i.sistol, &i.diastol, &i.bmi,
+ i.statusBMI, i.statusHB, i.resiko, i.detailResiko
+) == 14) {
+
 
         if (i.id == id) {
             printf("Nama: %s\nBMI: %.2f (%s)\nHB: %.2f (%s)\nResiko: %s\n",
@@ -231,11 +295,13 @@ void cariIbuHamilByNama() {
 
     printf("\nHASIL PENCARIAN\n");
     while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%f|%f|%f|%29[^|]|%29[^|]|%39[^\n]\n",
-        &i.id, i.nama, &i.usiaKehamilan,
-        &i.beratBadan, &i.tinggiBadan,
-        &i.hb, &i.bmi,
-        i.statusBMI, i.statusHB, i.resiko) == 10) {
+ "%d|%49[^|]|%d|%d|%f|%f|%f|%d|%d|%f|%29[^|]|%29[^|]|%39[^|]|%199[^\n]",
+ &i.id, i.nama, &i.umur, &i.usiaKehamilan,
+ &i.beratBadan, &i.tinggiBadan,
+ &i.hb, &i.sistol, &i.diastol, &i.bmi,
+ i.statusBMI, i.statusHB, i.resiko, i.detailResiko
+) == 14) {
+
 
         if (strstr(i.nama, key)) {
             printf("ID:%d | %s | %s\n", i.id, i.nama, i.resiko);
@@ -264,7 +330,8 @@ void editIbuHamil() {
     if (!f || !tmp) return;
 
     while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%f|%f|%f|%29[^|]|%29[^|]|%39[^\n]\n",
+        "%d|%49[^|]|%d|%d|%f|%f|%f|%d|%d|%f|%29[^|]|%29[^|]|%39[^|]|%199[^\n]"
+,
         &i.id, i.nama, &i.usiaKehamilan,
         &i.beratBadan, &i.tinggiBadan,
         &i.hb, &i.bmi,
@@ -277,6 +344,10 @@ void editIbuHamil() {
             i.beratBadan = inputFloat("Berat Badan baru (kg): ");
             i.tinggiBadan = inputFloat("Tinggi Badan baru(cm): ");
             i.hb = inputFloat("HB baru (g/dL)       : ");
+            i.umur = inputInt("Umur baru (thn)     : ");
+            i.sistol = inputInt("Sistol baru (mmHg) : ");
+            i.diastol = inputInt("Diastol baru(mmHg) : ");
+
 
             i.bmi = hitungBMI(i.beratBadan, i.tinggiBadan);
             tentukanStatusBMI(i.bmi, i.statusBMI);
@@ -285,11 +356,11 @@ void editIbuHamil() {
         }
 
         fprintf(tmp,
-            "%d|%s|%d|%.2f|%.2f|%.2f|%.2f|%s|%s|%s\n",
-            i.id, i.nama, i.usiaKehamilan,
+            "%d|%s|%d|%d|%.2f|%.2f|%.2f|%d|%d|%.2f|%s|%s|%s|%s\n",
+            i.id, i.nama, i.umur, i.usiaKehamilan,
             i.beratBadan, i.tinggiBadan,
-            i.hb, i.bmi,
-            i.statusBMI, i.statusHB, i.resiko);
+            i.hb, i.sistol, i.diastol, i.bmi,
+            i.statusBMI, i.statusHB, i.resiko, i.detailResiko);
     }
 
     fclose(f);
@@ -317,11 +388,11 @@ void hapusIbuHamil() {
     if (!f || !tmp) return;
 
     while (fscanf(f,
-        "%d|%49[^|]|%d|%f|%f|%f|%f|%29[^|]|%29[^|]|%39[^\n]\n",
-        &i.id, i.nama, &i.usiaKehamilan,
+        "%d|%49[^|]|%d|%d|%f|%f|%f|%d|%d|%f|%29[^|]|%29[^|]|%39[^|]|%199[^\n]",
+        &i.id, i.nama, &i.umur, &i.usiaKehamilan,
         &i.beratBadan, &i.tinggiBadan,
-        &i.hb, &i.bmi,
-        i.statusBMI, i.statusHB, i.resiko) == 10) {
+        &i.hb, &i.sistol, &i.diastol, &i.bmi,
+        i.statusBMI, i.statusHB, i.resiko, i.detailResiko) == 14) {
 
         if (i.id == id) {
             found = 1;
@@ -329,11 +400,11 @@ void hapusIbuHamil() {
         }
 
         fprintf(tmp,
-            "%d|%s|%d|%.2f|%.2f|%.2f|%.2f|%s|%s|%s\n",
-            i.id, i.nama, i.usiaKehamilan,
+            "%d|%s|%d|%d|%.2f|%.2f|%.2f|%d|%d|%.2f|%s|%s|%s|%s\n",
+            i.id, i.nama, i.umur, i.usiaKehamilan,
             i.beratBadan, i.tinggiBadan,
-            i.hb, i.bmi,
-            i.statusBMI, i.statusHB, i.resiko);
+            i.hb, i.sistol, i.diastol, i.bmi,
+            i.statusBMI, i.statusHB, i.resiko, i.detailResiko);
     }
 
     fclose(f);
