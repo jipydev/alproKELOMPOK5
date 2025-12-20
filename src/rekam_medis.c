@@ -167,12 +167,17 @@ void lihatRekam() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT REKAM MEDIS ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari berdasarkan ID\n");
-        printf("3. Cari berdasarkan Nama\n");
-        printf("0. Kembali\n");
-
+printf("|=========================|\n");
+printf("|     Data Rekam Medis    |\n");
+printf("|=========================|\n");
+printf("|1.Lihat Semua            |\n");
+printf("|-------------------------|\n");
+printf("|2.Cari Data By Id        |\n");
+printf("|-------------------------|\n");
+printf("|3.Cari Data By Nama      |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
         p = inputInt("Pilih: ");
 
         if (p == 1) tampilkanSemuaRekam();
@@ -239,12 +244,28 @@ void menuRekam() {
     int p;
     do {
         clearScreen();
+<<<<<<< HEAD
         printf("=== MENU REKAM MEDIS ===\n");
         printf("1. Tambah Data\n");
         printf("2. Lihat Data\n");
         printf("3. Edit Data\n");
         printf("4. Hapus Data\n");
         printf("0. Kembali\n");
+=======
+printf("|=========================|\n");
+printf("|       Rekam Medis       |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Data            |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Data             |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Data              |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Data             |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
+>>>>>>> Dirga
 
         p = inputInt("Pilih: ");
 

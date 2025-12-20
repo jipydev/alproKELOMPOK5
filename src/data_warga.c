@@ -216,12 +216,19 @@ void menuWarga() {
     int p;
     do {
         clearScreen();
-        printf("=== DATA WARGA ===\n");
-        printf("1. Tambah\n");
-        printf("2. Lihat\n");
-        printf("3. Edit\n");
-        printf("4. Hapus\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Data Warga        |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Warga           |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Data Warga       |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Data Warga        |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Data Warga       |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 

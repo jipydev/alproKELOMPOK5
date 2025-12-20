@@ -15,17 +15,33 @@ int main() {
 
     while (1) {
         clearScreen();
-        printf("===================================================\n");
-        printf("SIPANDU (Sistem Informasi Posyandu Digital Terpadu)\n");
-        printf("===================================================\n");
-        printf("1. Data Warga\n");
-        printf("2. Rekam Medis\n");
-        printf("3. Cek Stunting Balita\n");
-        printf("4. Cek Kesehatan Ibu Hamil\n");
-        printf("5. Jadwal Kegiatan\n");
-        printf("6. Inventaris\n");
-        printf("7. Laporan Keuangan\n");
-        printf("0. Keluar\n");
+    printf("|=========================================================================|\n"); 
+    printf("| $$$$$$$   $$$$$$   $$$$$$$     $$$$$$   $$    $$   $$$$$$$    $$    $$  |\n");
+    printf("|$$           $$     $$     $$  $$    $$  $$$   $$   $$     $$  $$    $$  |\n");
+    printf("| $$$$$$$     $$     $$$$$$$    $$$$$$$$  $$ $$ $$   $$     $$  $$    $$  |\n");
+    printf("|       $$    $$     $$         $$    $$  $$   $$$   $$     $$  $$    $$  |\n");
+    printf("| $$$$$$$   $$$$$$   $$         $$    $$  $$    $$   $$$$$$$     $$$$$$   |\n");
+    printf("|=========================================================================|\n");  
+    printf("\n"); 
+        printf("|===================================================|\n");
+        printf("|SIPANDU (Sistem Informasi Posyandu Digital Terpadu)|\n");
+        printf("|===================================================|\n");
+        printf("|1. Data Warga                                      |\n");
+        printf("|---------------------------------------------------|\n");
+        printf("|2. Rekam Medis                                     |\n");
+        printf("|---------------------------------------------------|\n");
+        printf("|3. Cek Stunting Balita                             |\n");
+        printf("|---------------------------------------------------|\n");
+        printf("|4. Cek Kesehatan Ibu Hamil                         |\n");                     
+        printf("|---------------------------------------------------|\n");
+        printf("|5. Jadwal Kegiatan                                 |\n");
+        printf("|---------------------------------------------------|\n");
+        printf("|6. Inventaris                                      |\n");
+        printf("|---------------------------------------------------|\n");
+        printf("|7. Laporan Keuangan                                |\n");
+        printf("|---------------------------------------------------|\n");
+        printf("|0. Keluar                                          |\n");
+        printf("|===================================================|\n");
 
         pilih = inputInt("Pilih menu: ");
 
@@ -42,5 +58,7 @@ int main() {
                 printf("Pilihan tidak ada!\n");
                 pauseScreen();
         }
-    }
+    } while (pilih!=0)
+
+    return 0;
 }

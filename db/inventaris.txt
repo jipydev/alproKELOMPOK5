@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 1 dirga 99
 1 dadwasdw 9
 1 Test 3
 1 test4 90
 1 ww2 12
+=======
+>>>>>>> Dirga

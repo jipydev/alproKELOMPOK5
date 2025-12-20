@@ -240,11 +240,17 @@ void lihatStunting() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT DATA STUNTING ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari Berdasarkan ID\n");
-        printf("3. Cari Berdasarkan Nama\n");
-        printf("0. Kembali\n");
+printf("|=========================|\n");
+printf("|       Data Stunting     |\n");
+printf("|=========================|\n");
+printf("|1.Lihat Semua            |\n");
+printf("|-------------------------|\n");
+printf("|2.Cari Stunting By Id    |\n");
+printf("|-------------------------|\n");
+printf("|3.Cari Stunting By Nama  |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
 
@@ -261,12 +267,28 @@ void menuStunting() {
     int p;
     do {
         clearScreen();
+<<<<<<< HEAD
         printf("=== MENU CEK STUNTING BALITA ===\n");
         printf("1. Tambah Data\n");
         printf("2. Lihat Data\n");
         printf("3. Edit Data\n");
         printf("4. Hapus Data\n");
         printf("0. Kembali\n");
+=======
+printf("|=========================|\n");
+printf("|       Stunting          |\n");
+printf("|=========================|\n");
+printf("|1.Tambah Data Stunting   |\n");
+printf("|-------------------------|\n");
+printf("|2.Lihat Data Stunting    |\n");
+printf("|-------------------------|\n");
+printf("|3.Edit Data Stunting     |\n");
+printf("|-------------------------|\n");
+printf("|4.Hapus Data Stunting    |\n");
+printf("|-------------------------|\n");
+printf("|0.Exit                   |\n");
+printf("|-------------------------|\n");;
+>>>>>>> Dirga
 
         p = inputInt("Pilih: ");
 
