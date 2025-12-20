@@ -312,7 +312,7 @@ printf("|4.Hapus Barang           |\n");
 printf("|-------------------------|\n");
 printf("|5.Cari Inventory         |\n");
 printf("|-------------------------|\n");
-printf("|0.Exit                   |\n");
+printf("|0.Keluar                 |\n");
 printf("|-------------------------|\n");
 
 pilih=inputInt("Pilihan Anda : ");

@@ -264,7 +264,7 @@ printf("|4.Cari Keuangan By Tanggal|\n");
 printf("|--------------------------|\n");
 printf("|5.Cari Inventory          |\n");
 printf("|--------------------------|\n");
-printf("|0.Exit                    |\n");
+printf("|0.Keluar                  |\n");
 printf("|--------------------------|\n");
 
         p = inputInt("Pilih: ");
@@ -415,7 +415,7 @@ printf("|3.Edit Data Keuangan     |\n");
 printf("|-------------------------|\n");
 printf("|4.Hapus Data             |\n");
 printf("|-------------------------|\n");
-printf("|0.Exit                   |\n");
+printf("|0.Keluar                 |\n");
 printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");

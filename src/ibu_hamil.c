@@ -563,7 +563,7 @@ printf("|2.Cari Data By Id        |\n");
 printf("|-------------------------|\n");
 printf("|3.Cari Data By Nama      |\n");
 printf("|-------------------------|\n");
-printf("|0.Exit                   |\n");
+printf("|0.Keluar                 |\n");
 printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
@@ -589,7 +589,7 @@ printf("|3.Edit Data              |\n");
 printf("|-------------------------|\n");
 printf("|4.Hapus Data             |\n");
 printf("|-------------------------|\n");
-printf("|0.Exit                   |\n");
+printf("|0.Keluar                 |\n");
 printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");

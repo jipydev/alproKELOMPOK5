@@ -264,7 +264,7 @@ void lihatJadwal() {
         printf("|-------------------------|\n");
         printf("|4.Cari Jadwal By Tanggal |\n");
         printf("|-------------------------|\n");
-        printf("|0.Exit                   |\n");
+        printf("|0.Keluar                 |\n");
         printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
@@ -406,7 +406,7 @@ printf("|3.Edit Jadwal            |\n");
 printf("|-------------------------|\n");
 printf("|4.Hapus Jadwal           |\n");
 printf("|-------------------------|\n");
-printf("|0.Exit                   |\n");
+printf("|0.Keluar                 |\n");
 printf("|-------------------------|\n");
 
         p = inputInt("Pilih: ");
