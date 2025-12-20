@@ -161,37 +161,56 @@ void hapusInv() {
     clearScreen();
 
     FILE *fp, *temp;
-    int idHapus;
     inventaris i, barangHapus;
+    int idHapus;
     int ditemukan = 0;
 
-printf("=====================================\n");
-printf("|            HAPUS BARANG            |\n");
-printf("=====================================\n");
-printf("Masukkan ID yang ingin dihapus: ");
-scanf("%d", &idHapus);
-printf("=====================================\n");
-
+    /* ================== TAMPILKAN SEMUA DATA ================== */
     fp = fopen(FILE_INV, "r");
     if (!fp) {
-        printf("Data belum ada!\n");
+        printf("Data inventaris masih kosong!\n");
         pauseScreen();
         return;
     }
 
+    printf("================================================\n");
+    printf("|              DATA INVENTARIS                 |\n");
+    printf("================================================\n");
+    printf("| %-4s | %-20s | %-6s |\n", "ID", "Nama Barang", "Stok");
+    printf("------------------------------------------------\n");
+
+    while (fscanf(fp, "%d %49s %d",
+                  &i.id, i.namaBarang, &i.stok) == 3) {
+        printf("| %-4d | %-20s | %-6d |\n",
+               i.id, i.namaBarang, i.stok);
+    }
+
+    printf("------------------------------------------------\n");
+    fclose(fp);
+    pauseScreen();
+
+    /* ================== INPUT ID HAPUS ================== */
+    printf("\n=====================================\n");
+    printf("|            HAPUS BARANG            |\n");
+    printf("=====================================\n");
+    printf("Masukkan ID yang ingin dihapus : ");
+    scanf("%d", &idHapus);
+
+    fp = fopen(FILE_INV, "r");
     temp = fopen("temp.txt", "w");
-    if (!temp) {
-        printf("Gagal membuat file sementara!\n");
+
+    if (!fp || !temp) {
+        printf("Gagal membuka file.\n");
         pauseScreen();
-        fclose(fp);
         return;
     }
 
-    while (fscanf(fp, "%d %s %d",
+    /* ================== PROSES HAPUS ================== */
+    while (fscanf(fp, "%d %49s %d",
                   &i.id, i.namaBarang, &i.stok) == 3) {
 
         if (i.id == idHapus) {
-            barangHapus = i;   
+            barangHapus = i;
             ditemukan = 1;
         } else {
             fprintf(temp, "%d %s %d\n",
@@ -202,6 +221,7 @@ printf("=====================================\n");
     fclose(fp);
     fclose(temp);
 
+    /* ================== HASIL ================== */
     if (ditemukan) {
         remove(FILE_INV);
         rename("temp.txt", FILE_INV);
@@ -217,16 +237,11 @@ printf("=====================================\n");
         printf("------------------------------------------------\n");
     } else {
         remove("temp.txt");
-        printf("ID tidak ditemukan.\n");
+        printf("\n[!] ID tidak ditemukan.\n");
     }
 
-    printf("\nTekan 0 untuk kembali ke menu...");
-    int back;
-    do {
-        scanf("%d", &back);
-    } while (back != 0);
+    pauseScreen();
 }
-
 void cariInv() {
 
 
