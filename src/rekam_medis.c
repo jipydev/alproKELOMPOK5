@@ -82,24 +82,35 @@ void tambahRekam() {
     clearScreen();
     loadRekam();
 
-    int id = inputInt("Masukkan ID Rekam (0 = batal): ");
-    if (id == 0) return;
+    printf("========================================\n");
+    printf("      TAMBAH DATA REKAM MEDIS            \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Rekam (0 = batal) : ");
+    if (id == 0) {
+        printf("\nProses penambahan dibatalkan.\n");
+        pauseScreen();
+        return;
+    }
 
     if (cariIndexById(id) != -1) {
-        printf("ID sudah digunakan!\n");
+        printf("\n[!] ID sudah digunakan!\n");
         pauseScreen();
         return;
     }
 
     Rekam r;
     r.id = id;
+
+    printf("\n=========== INPUT DATA ===========\n");
     inputString("Nama Pasien : ", r.nama, sizeof(r.nama));
     inputString("Keluhan     : ", r.keluhan, sizeof(r.keluhan));
+    printf("=================================\n");
 
     dataRekam[jumlahRekam++] = r;
     saveRekam();
 
-    printf("Data rekam medis berhasil ditambahkan!\n");
+    printf("\n[✓] Data rekam medis berhasil ditambahkan!\n");
     pauseScreen();
 }
 
@@ -111,13 +122,32 @@ void tampilkanSemuaRekam() {
     loadRekam();
     sortRekamByNama();
 
-    printf("=== DATA REKAM MEDIS ===\n");
-    for (int i = 0; i < jumlahRekam; i++) {
-        printf("ID:%d | Nama:%s | Keluhan:%s\n",
-            dataRekam[i].id,
-            dataRekam[i].nama,
-            dataRekam[i].keluhan);
+    printf("========================================\n");
+    printf("           DATA REKAM MEDIS              \n");
+    printf("========================================\n");
+
+    if (jumlahRekam == 0) {
+        printf("\nBelum ada data rekam medis.\n");
+        printf("========================================\n");
+        pauseScreen();
+        return;
     }
+
+    printf("| %-4s | %-20s | %-30s |\n",
+           "ID", "Nama Pasien", "Keluhan");
+    printf("========================================\n");
+
+    for (int i = 0; i < jumlahRekam; i++) {
+        printf("| %-4d | %-20s | %-30s |\n",
+               dataRekam[i].id,
+               dataRekam[i].nama,
+               dataRekam[i].keluhan);
+    }
+
+    printf("========================================\n");
+    printf("Total Rekam Medis : %d\n", jumlahRekam);
+    printf("========================================\n");
+
     pauseScreen();
 }
 
@@ -125,40 +155,57 @@ void cariRekamById() {
     clearScreen();
     loadRekam();
 
-    int id = inputInt("Masukkan ID: ");
+    printf("========================================\n");
+    printf("     CARI DATA REKAM MEDIS BERDASARKAN ID\n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Rekam : ");
     int idx = cariIndexById(id);
 
     if (idx == -1) {
-        printf("Data tidak ditemukan.\n");
+        printf("\n[!] Data rekam medis dengan ID %d tidak ditemukan.\n", id);
     } else {
-        printf("ID:%d\nNama:%s\nKeluhan:%s\n",
-            dataRekam[idx].id,
-            dataRekam[idx].nama,
-            dataRekam[idx].keluhan);
+        printf("\n========== DATA REKAM MEDIS ==========\n");
+        printf("ID       : %d\n", dataRekam[idx].id);
+        printf("Nama     : %s\n", dataRekam[idx].nama);
+        printf("Keluhan  : %s\n", dataRekam[idx].keluhan);
+        printf("=====================================\n");
     }
-    pauseScreen();
-}
 
+    pauseScreen();
+} 
 void cariRekamByNama() {
     clearScreen();
     loadRekam();
 
+    printf("========================================\n");
+    printf("     CARI DATA REKAM MEDIS BERDASARKAN NAMA\n");
+    printf("========================================\n");
+
     char key[50];
-    inputString("Masukkan nama: ", key, sizeof(key));
+    inputString("Masukkan nama pasien : ", key, sizeof(key));
 
     int found = 0;
+
+    printf("\n| %-4s | %-20s | %-25s |\n",
+           "ID", "Nama Pasien", "Keluhan");
+    printf("========================================\n");
+
     for (int i = 0; i < jumlahRekam; i++) {
         if (strstr(dataRekam[i].nama, key)) {
-            printf("ID:%d | Nama:%s | Keluhan:%s\n",
-                dataRekam[i].id,
-                dataRekam[i].nama,
-                dataRekam[i].keluhan);
+            printf("| %-4d | %-20s | %-25s |\n",
+                   dataRekam[i].id,
+                   dataRekam[i].nama,
+                   dataRekam[i].keluhan);
             found = 1;
         }
     }
 
-    if (!found)
-        printf("Data tidak ditemukan.\n");
+    if (!found) {
+        printf("\n[!] Data rekam medis dengan nama \"%s\" tidak ditemukan.\n", key);
+    } else {
+        printf("========================================\n");
+    }
 
     pauseScreen();
 }
@@ -194,20 +241,33 @@ void editRekam() {
     clearScreen();
     loadRekam();
 
-    int id = inputInt("Masukkan ID: ");
+    printf("========================================\n");
+    printf("          EDIT REKAM MEDIS               \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Rekam : ");
     int idx = cariIndexById(id);
 
     if (idx == -1) {
-        printf("ID tidak ditemukan!\n");
+        printf("\n[!] ID tidak ditemukan!\n");
         pauseScreen();
         return;
     }
 
-    inputString("Nama baru    : ", dataRekam[idx].nama, sizeof(dataRekam[idx].nama));
-    inputString("Keluhan baru : ", dataRekam[idx].keluhan, sizeof(dataRekam[idx].keluhan));
+    printf("\nData Lama\n");
+    printf("----------------------------------------\n");
+    printf("ID      : %d\n", dataRekam[idx].id);
+    printf("Nama    : %s\n", dataRekam[idx].nama);
+    printf("Keluhan : %s\n", dataRekam[idx].keluhan);
+    printf("----------------------------------------\n");
+
+    printf("\nMasukkan Data Baru\n");
+    inputString("Nama Baru    : ", dataRekam[idx].nama, sizeof(dataRekam[idx].nama));
+    inputString("Keluhan Baru : ", dataRekam[idx].keluhan, sizeof(dataRekam[idx].keluhan));
 
     saveRekam();
-    printf("Data berhasil diupdate!\n");
+
+    printf("\n[✓] Data rekam medis berhasil diperbarui!\n");
     pauseScreen();
 }
 
@@ -218,14 +278,26 @@ void hapusRekam() {
     clearScreen();
     loadRekam();
 
-    int id = inputInt("Masukkan ID: ");
+    printf("========================================\n");
+    printf("          HAPUS DATA REKAM MEDIS         \n");
+    printf("========================================\n");
+
+    int id = inputInt("Masukkan ID Rekam : ");
     int idx = cariIndexById(id);
 
     if (idx == -1) {
-        printf("ID tidak ditemukan!\n");
+        printf("\n[!] ID tidak ditemukan!\n");
         pauseScreen();
         return;
     }
+
+    /* Tampilkan data yang akan dihapus */
+    printf("\nData yang dihapus:\n");
+    printf("----------------------------------------\n");
+    printf("ID      : %d\n", dataRekam[idx].id);
+    printf("Nama    : %s\n", dataRekam[idx].nama);
+    printf("Keluhan : %s\n", dataRekam[idx].keluhan);
+    printf("----------------------------------------\n");
 
     for (int i = idx; i < jumlahRekam - 1; i++) {
         dataRekam[i] = dataRekam[i + 1];
@@ -233,7 +305,8 @@ void hapusRekam() {
     jumlahRekam--;
 
     saveRekam();
-    printf("Data berhasil dihapus!\n");
+
+    printf("\n[✓] Data rekam medis berhasil dihapus!\n");
     pauseScreen();
 }
 
