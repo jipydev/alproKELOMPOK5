@@ -246,13 +246,6 @@ void lihatJadwal() {
     int p;
     do {
         clearScreen();
-        printf("=== LIHAT JADWAL KEGIATAN ===\n");
-        printf("1. Tampilkan Semua\n");
-        printf("2. Cari berdasarkan ID\n");
-        printf("3. Cari berdasarkan Nama\n");
-        printf("4. Cari berdasarkan Tanggal\n");
-        printf("0. Kembali\n");
-
         printf("|===================================|\n");
         printf("|       Lihat Jadwal Kegiatan       |\n");
         printf("|===================================|\n");
