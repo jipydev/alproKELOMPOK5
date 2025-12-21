@@ -66,62 +66,10 @@ void tambahKeuangan() {
 
     fclose(f);
 
-    printf("\n[✓] Data keuangan berhasil ditambahkan!\n");
+    printf("\nData keuangan berhasil ditambahkan!\n");
     pauseScreen();
 }
 
-/* =======================
-   CARI BY JENIS
-   ======================= */
-void cariKeuanganByJenis() {
-    clearScreen();
-
-    printf("========================================\n");
-    printf("     CARI DATA KEUANGAN BERDASARKAN JENIS \n");
-    printf("========================================\n");
-
-    char cari[20];
-    inputString("Masukkan jenis (MASUK/KELUAR) : ", cari, sizeof(cari));
-
-    FILE *f = fopen(FILE_KEUANGAN, "r");
-    if (!f) {
-        printf("\nBelum ada data keuangan.\n");
-        printf("========================================\n");
-        pauseScreen();
-        return;
-    }
-
-    Keuangan k;
-    int found = 0;
-
-    printf("\n| %-4s | %-10s | %-10s | %-12s | %-20s |\n",
-           "ID", "Jenis", "Nominal", "Tanggal", "Keterangan");
-    printf("=============================================================================\n");
-
-    while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
-                  &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
-
-        if (strcmp(k.jenis, cari) == 0) {
-            printf("| %-4d | %-10s | Rp%-8d | %-12s | %-20s |\n",
-                   k.id,
-                   k.jenis,
-                   k.nominal,
-                   k.tanggal,
-                   k.keterangan);
-            found = 1;
-        }
-    }
-
-    fclose(f);
-
-    if (!found) {
-        printf("\n[!] Tidak ada data keuangan dengan jenis \"%s\".\n", cari);
-    } else {
-        printf("=============================================================================\n");
-    }
-
-    pauseScreen();
-}
 /* =======================
    CARI BY TANGGAL
    ======================= */
@@ -166,7 +114,7 @@ void cariKeuanganById() {
 
     FILE *f = fopen(FILE_KEUANGAN, "r");
     if (!f) {
-        printf("\n[!] Belum ada data keuangan.\n");
+        printf("\nBelum ada data keuangan.\n");
         pauseScreen();
         return;
     }
@@ -215,18 +163,18 @@ void tampilkanSemuaKeuangan() {
     Keuangan k;
     int totalMasuk = 0, totalKeluar = 0;
 
-    printf("========================================\n");
-    printf("        DATA LAPORAN KEUANGAN            \n");
-    printf("========================================\n");
-    printf("| %-4s | %-7s | %-12s | %-12s |\n",
-           "ID", "Jenis", "Nominal", "Tanggal");
+    printf("=============================================\n");
+    printf("            DATA LAPORAN KEUANGAN            \n");
+    printf("=============================================\n");
+    printf("| %-4s | %-7s | %-12s | %-12s | %-12s |\n",
+           "ID", "Jenis", "Nominal", "Tanggal", "Keterangan");
     printf("========================================\n");
 
     while (fscanf(f, "%d|%19[^|]|%d|%19[^|]|%99[^\n]\n",
                   &k.id, k.jenis, &k.nominal, k.tanggal, k.keterangan) != EOF) {
 
-        printf("| %-4d | %-7s | Rp%-9d | %-12s |\n",
-               k.id, k.jenis, k.nominal, k.tanggal);
+        printf("| %-4d | %-7s | Rp%-9d | %-12s | %-12s |\n",
+               k.id, k.jenis, k.nominal, k.tanggal, k.keterangan);
 
         if (strcmp(k.jenis, "MASUK") == 0)
             totalMasuk += k.nominal;
@@ -235,12 +183,6 @@ void tampilkanSemuaKeuangan() {
     }
 
     fclose(f);
-
-    printf("========================================\n");
-    printf("Total MASUK  : Rp%d\n", totalMasuk);
-    printf("Total KELUAR : Rp%d\n", totalKeluar);
-    printf("Saldo        : Rp%d\n", totalMasuk - totalKeluar);
-    printf("========================================\n");
 
     pauseScreen();
 }
@@ -258,11 +200,7 @@ printf("|1.Lihat Semua             |\n");
 printf("|--------------------------|\n");
 printf("|2.Cari Keuangan By Id     |\n");
 printf("|--------------------------|\n");
-printf("|3.Cari Keuangan By Jenis  |\n");
-printf("|--------------------------|\n");
-printf("|4.Cari Keuangan By Tanggal|\n");
-printf("|--------------------------|\n");
-printf("|5.Cari Inventory          |\n");
+printf("|3.Cari Keuangan By Tanggal|\n");
 printf("|--------------------------|\n");
 printf("|0.Keluar                  |\n");
 printf("|--------------------------|\n");
@@ -272,8 +210,7 @@ printf("|--------------------------|\n");
         switch (p) {
             case 1: tampilkanSemuaKeuangan(); break;
             case 2: cariKeuanganById(); break;
-            case 3: cariKeuanganByJenis(); break;
-            case 4: cariKeuanganByTanggal(); break;
+            case 3: cariKeuanganByTanggal(); break;
         }
     } while (p != 0);
 }
