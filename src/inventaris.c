@@ -101,6 +101,26 @@ printf("Tekan 0 Untuk Melanjutkan..");
 getchar();
     fclose(fp);
 }
+void tampilkanSemuaInvDoang() {
+    clearScreen();
+     FILE *fp = fopen(FILE_INV, "r");
+    if (!fp) {
+        printf("Belum ada data.\n");
+        return;
+    }
+
+    inventaris i;
+
+    printf("\n      === DATA INVENTARIS ===    \n");
+printf("------------------------------------------------\n");
+printf("| %-4s | %-20s | %-6s |\n", "ID", "Nama Barang", "Stok");
+printf("------------------------------------------------\n");
+
+while (fscanf(fp, "%d %s %d", &i.id, i.namaBarang, &i.stok) == 3) {
+    printf("| %-4d | %-20s | %-6d |\n",
+           i.id, i.namaBarang, i.stok);
+}
+}
 void editInv(){
 clearScreen();
     FILE *fp, *temp;
@@ -168,7 +188,11 @@ void hapusInv() {
     int idHapus;
     inventaris i, barangHapus;
     int ditemukan = 0;
+    tampilkanSemuaInvDoang();
+    printf("------------------------------------------------\n");
 
+
+    
     printf("Masukkan ID barang yang ingin dihapus: ");
     scanf("%d", &idHapus);
 

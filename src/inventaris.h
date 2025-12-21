@@ -6,5 +6,5 @@ void tambahInv();
 void tampilkanSemuaInv();
 void editInv();
 void hapusInv();
-
+void tampilkanSemuaInvDoang();
 #endif
