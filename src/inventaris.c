@@ -296,9 +296,10 @@ printf("================================================\n");
 
 //Menu utama 
 void menuInventaris(){
-    clearScreen();
+    
 int pilih;
 do{
+    clearScreen();
 printf("|=========================|\n");
 printf("|       Inventory         |\n");
 printf("|=========================|\n");

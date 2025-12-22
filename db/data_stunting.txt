@@ -1,2 +1,0 @@
-1|www|12|12.00|STUNTING
-2|dirga|20|160.00|NORMAL

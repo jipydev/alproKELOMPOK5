@@ -1,5 +1,0 @@
-1|A|PWK|1
-2|B|PWK|2
-3|qq|qq|12
-4|Dirga|Balandongan|20
-7|PANDITA|PWK|19
