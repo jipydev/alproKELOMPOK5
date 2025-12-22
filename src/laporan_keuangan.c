@@ -252,7 +252,7 @@ void lihatKeuangan() {
     do {
         clearScreen();
 printf("|==========================|\n");
-printf("|       Inventory          |\n");
+printf("|       Laporan Keuangan   |\n");
 printf("|==========================|\n");
 printf("|1.Lihat Semua             |\n");
 printf("|--------------------------|\n");
